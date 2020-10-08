@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:places_app/const/const.dart';
+import 'package:places_app/menu.dart';
 import 'package:places_app/pages/categories/index.dart';
 import 'package:places_app/pages/home_page.dart';
 
