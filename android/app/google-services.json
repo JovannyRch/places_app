@@ -8,17 +8,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:582798023930:android:c57024d039747e770d7d43",
+        "mobilesdk_app_id": "1:582798023930:android:de0ee76cd46e44e80d7d43",
         "android_client_info": {
-          "package_name": "com.example.places_app"
+          "package_name": "com.iqneting.places_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "582798023930-q55n9bn4pd0smufioif1b9e73ka5m460.apps.googleusercontent.com",
+          "client_id": "582798023930-l7dacgimjaa6ag94s79j213c1o1c26df.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.places_app",
+            "package_name": "com.iqneting.places_app",
             "certificate_hash": "b354b41e4cd86e188b12391aa90904c80309ebbf"
           }
         },
