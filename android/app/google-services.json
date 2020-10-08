@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "582798023930",
+    "firebase_url": "https://tta-app-20c4c.firebaseio.com",
+    "project_id": "tta-app-20c4c",
+    "storage_bucket": "tta-app-20c4c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:582798023930:android:c57024d039747e770d7d43",
+        "android_client_info": {
+          "package_name": "com.example.places_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "582798023930-q55n9bn4pd0smufioif1b9e73ka5m460.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.places_app",
+            "certificate_hash": "b354b41e4cd86e188b12391aa90904c80309ebbf"
+          }
+        },
+        {
+          "client_id": "582798023930-d2n2vvek5jgd5rlqplaa11u6iorjader.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjbRRlPR0qPp8kRTZ9Z0o_XmGi3gvg0Sg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "582798023930-d2n2vvek5jgd5rlqplaa11u6iorjader.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
