@@ -1,3 +1,5 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import '../const/const.dart';
@@ -147,9 +149,33 @@ class _RegisterPageState extends State<RegisterPage> {
                   fontSize: 20.0,
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
-          onPressed: () {
-            //TODO: auth
-            Navigator.of(context).popAndPushNamed('login');
+          onPressed: () async {
+            try {
+              UserCredential user = (await FirebaseAuth.instance
+                  .createUserWithEmailAndPassword(
+                      email: _emailController.text,
+                      password: _passwordController.text));
+              print(user);
+
+              if (user != null) {
+                user.user.updateProfile(displayName: _nameController.text);
+                Navigator.of(context).popAndPushNamed('login');
+              }
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'weak-password') {
+                print('The password provided is too weak.');
+              } else if (e.code == 'email-already-in-use') {
+                print('The account already exists for that email.');
+              }
+            } catch (e) {
+              print(e);
+              _emailController.clear();
+              _nameController.clear();
+              _apellidoMaternoController.clear();
+              _apellidoPaternoController.clear();
+              _passwordController.clear();
+              _rePasswordController.clear();
+            }
           },
         ));
 
