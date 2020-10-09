@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:places_app/menu.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -15,7 +16,10 @@ class _HomePageState extends State<HomePage> {
     print('Mensaje recibido desde notificacion $arg');
 
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
+      drawer: MenuBar(),
       appBar: AppBar(
+        backgroundColor: Colors.white10,
         title: Text("Home"),
         centerTitle: true,
       ),
