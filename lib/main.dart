@@ -34,7 +34,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       title: 'places app',
-      initialRoute: 'home',
+      initialRoute: 'login',
       routes: routes,
     );
   }
