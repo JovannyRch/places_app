@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:places_app/components/afiliados_slider.dart';
-import 'package:places_app/components/custom_header.dart';
 import 'package:places_app/models/categoria_model.dart';
 
 CameraPosition _initialPosition =
@@ -38,7 +37,7 @@ class _AfiliadosPageState extends State<AfiliadosPage> {
           color: Colors.black,
         ),
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 0,
+        elevation: 1,
       ),
       body: SafeArea(
         child: Container(

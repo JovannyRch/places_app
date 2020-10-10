@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:places_app/data/Data.dart';
+import 'package:places_app/models/afiliado_model.dart';
+import 'package:places_app/pages/afilidados_detail.dart';
 
 class AfiliadosCarousel extends StatelessWidget {
   Size _size;
+
+  List<AfiliadoModel> afiliados = GlobalData.afiliados;
 
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
     return CarouselSlider(
-      items: [1, 2, 3, 4, 5].map((i) {
+      items: afiliados.map((a) {
         return Builder(
           builder: (BuildContext context) {
-            return _containerAfiliado();
+            return _containerAfiliado(context, a);
           },
         );
       }).toList(),
@@ -34,33 +38,42 @@ class AfiliadosCarousel extends StatelessWidget {
     );
   }
 
-  Widget _containerAfiliado() {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 10.0),
-      child: Column(
-        children: [
-          Container(
-            child: Image.network(DEFAULT_IMAGE),
-          ),
-          Container(
-            padding: EdgeInsets.only(
-              top: 5.0,
+  Widget _containerAfiliado(BuildContext context, AfiliadoModel a) {
+    return GestureDetector(
+      onTap: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AfiliadosDetailsPage(afiliado: a)),
+        )
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        margin: EdgeInsets.symmetric(horizontal: 10.0),
+        child: Column(
+          children: [
+            Container(
+              child: Image.network(a.img),
             ),
-            width: double.infinity,
-            child: Text(
-              "Nombre del afiliado",
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 22.0,
-                color: Colors.grey.shade600,
+            Container(
+              padding: EdgeInsets.only(
+                top: 5.0,
               ),
-            ),
-          )
-        ],
+              width: double.infinity,
+              child: Text(
+                a.nombre,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 22.0,
+                  color: Colors.grey.shade600,
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
