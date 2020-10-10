@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:places_app/components/afiliados_slider.dart';
+import 'package:places_app/components/noticias_slider.dart';
+import 'package:places_app/const/const.dart';
 import 'package:places_app/menu.dart';
 
 class HomePage extends StatefulWidget {
@@ -9,22 +13,89 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+  Size _size;
   @override
   Widget build(BuildContext context) {
+    _size = MediaQuery.of(context).size;
     final arg = ModalRoute.of(context).settings.arguments;
 
     print('Mensaje recibido desde notificacion $arg');
 
     return Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomPadding: false,
       drawer: MenuBar(),
-      appBar: AppBar(
-        backgroundColor: Colors.white10,
-        title: Text("Home"),
-        centerTitle: true,
+      body: _stack(),
+    );
+  }
+
+  Widget _stack() {
+    return Stack(
+      children: <Widget>[
+        _body(),
+        Positioned(
+          left: 10,
+          top: 20,
+          child: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => scaffoldKey.currentState.openDrawer(),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _body() {
+    return SafeArea(
+        child: Container(
+      padding: EdgeInsets.only(top: 50.0, right: 20.0, left: 20.0),
+      child: Column(
+        children: [
+          _publicidad(),
+          SizedBox(height: 15.0),
+          _title("Afiliados"),
+          AfiliadosCarousel(),
+          SizedBox(height: 5.0),
+          _title("Contenido"),
+          NoticiasSlider(),
+        ],
       ),
-      body: Center(
-        child: Text("HOME PAGE"),
+    ));
+  }
+
+  Widget _title(String title) {
+    return Container(
+      width: double.infinity,
+      child: Text(
+        title,
+        textAlign: TextAlign.left,
+        style: TextStyle(
+          color: Colors.grey.shade800,
+          fontSize: 23.0,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 1.3,
+        ),
+      ),
+      margin: EdgeInsets.only(
+        bottom: 20.0,
+      ),
+    );
+  }
+
+  Widget _publicidad() {
+    return Container(
+      height: _size.height * 0.25,
+      child: new Swiper(
+        itemBuilder: (BuildContext context, int index) {
+          return new Image.network(
+            "https://ca-times.brightspotcdn.com/dims4/default/589e1df/2147483647/strip/true/crop/1280x720+0+0/resize/840x473!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F1f%2F22%2F634b5db1fb5e944d75eb6054aeee%2Fhoyla-aut-ford-lanza-una-masiva-campana-public-001",
+            fit: BoxFit.fill,
+          );
+        },
+        autoplay: true,
+        itemCount: 4,
+        pagination: new SwiperPagination(),
       ),
     );
   }
