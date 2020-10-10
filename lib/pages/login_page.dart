@@ -13,12 +13,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-    TextEditingController _emailController;
-    TextEditingController _passwordController;
     bool isSubmitting = false;
 /* 
     final logo = Image.asset(
@@ -98,8 +98,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
           onPressed: () async {
-            print(_emailController.);
-            /*  try {
+            try {
               UserCredential user = (await FirebaseAuth.instance
                   .signInWithEmailAndPassword(
                       email: _emailController.text,
@@ -120,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
               _passwordController.clear();
             }
 
-            Navigator.of(context).popAndPushNamed('home'); */
+            Navigator.of(context).popAndPushNamed('home');
           },
         ));
 
