@@ -5,11 +5,11 @@ const DEFAULT_IMAGE =
 
 class GlobalData {
   static List<Categoria> categorias = [
-    Categoria(nombre: "Mecánicos", img: DEFAULT_IMAGE),
-    Categoria(nombre: "Grúas", img: DEFAULT_IMAGE),
-    Categoria(nombre: "Vulcanizadora", img: DEFAULT_IMAGE),
-    Categoria(nombre: "Eléctrico", img: DEFAULT_IMAGE),
-    Categoria(nombre: "Alineación y balanceo", img: DEFAULT_IMAGE),
-    Categoria(nombre: "Autolavado", img: DEFAULT_IMAGE),
+    Categoria(id: "1", nombre: "Mecánicos", img: DEFAULT_IMAGE),
+    Categoria(id: "2", nombre: "Grúas", img: DEFAULT_IMAGE),
+    Categoria(id: "13", nombre: "Vulcanizadora", img: DEFAULT_IMAGE),
+    Categoria(id: "14", nombre: "Eléctrico", img: DEFAULT_IMAGE),
+    Categoria(id: "15", nombre: "Alineación y balanceo", img: DEFAULT_IMAGE),
+    Categoria(id: "16", nombre: "Autolavado", img: DEFAULT_IMAGE),
   ];
 }

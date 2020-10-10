@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:places_app/models/categoria_model.dart';
+import 'package:places_app/pages/afiliados_page.dart';
 
 class ColumnCategories extends StatefulWidget {
   final List<Categoria> categories;
@@ -52,7 +53,13 @@ class CategoryColumnItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => {},
+      onTap: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AfiliadosPage(categoria: category)),
+        )
+      },
       child: Container(
         child: Stack(
           children: <Widget>[
