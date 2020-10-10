@@ -13,12 +13,12 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-    TextEditingController _emailController;
-    TextEditingController _passwordController;
     bool isSubmitting = false;
 /* 
     final logo = Image.asset(

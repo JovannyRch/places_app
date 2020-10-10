@@ -13,16 +13,17 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _apellidoPaternoController = TextEditingController();
+  TextEditingController _apellidoMaternoController = TextEditingController();
+  TextEditingController _rePasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-    TextEditingController _emailController;
-    TextEditingController _passwordController;
-    TextEditingController _nameController;
-    TextEditingController _apellidoPaternoController;
-    TextEditingController _apellidoMaternoController;
-    TextEditingController _rePasswordController;
+
     bool isSubmitting = false;
 /* 
     final logo = Image.asset(
@@ -168,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 print('The account already exists for that email.');
               }
             } catch (e) {
-              print(e);
+              print('error $e');
               _emailController.clear();
               _nameController.clear();
               _apellidoMaternoController.clear();
