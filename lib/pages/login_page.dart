@@ -98,7 +98,8 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
           onPressed: () async {
-            try {
+            print(_emailController.);
+            /*  try {
               UserCredential user = (await FirebaseAuth.instance
                   .signInWithEmailAndPassword(
                       email: _emailController.text,
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
               _passwordController.clear();
             }
 
-            Navigator.of(context).popAndPushNamed('home');
+            Navigator.of(context).popAndPushNamed('home'); */
           },
         ));
 
