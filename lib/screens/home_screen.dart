@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_page_indicator/flutter_page_indicator.dart';
 import 'package:places_app/const/const.dart';
 import 'package:places_app/pages/categories/index.dart';
+import 'package:places_app/pages/historial_page.dart';
 import 'package:places_app/pages/home_page.dart';
 
 import 'package:flutter_swiper/flutter_swiper.dart';
@@ -23,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           HomePage(),
           CategoriesPage(),
+          HistorialPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -34,6 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_on),
             title: Text("Categorías"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            title: Text("Historial"),
           ),
         ],
         currentIndex: _selectedIndex,
