@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:places_app/services/facebook_signin_service.dart';
 import 'package:places_app/services/google_signin_service.dart';
 
 import '../const/const.dart';
@@ -126,23 +127,29 @@ class _LoginPageState extends State<LoginPage> {
           },
         ));
 
-    final googleLoginButton = Material(
-        elevation: 5.0,
-        borderRadius: BorderRadius.circular(25.0),
-        color: kBaseColor,
-        child: MaterialButton(
-          minWidth: mq.size.width / 1.2,
-          padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [Icon(FontAwesomeIcons.google, color: Colors.white)]),
-          onPressed: () async {
-            User user = await GoogleSignInService.signInWithGoogle();
-            if (user != null) {
-              Navigator.of(context).popAndPushNamed('home');
-            }
-          },
-        ));
+    final facebookLoginButton = FloatingActionButton(
+      backgroundColor: kBaseColor,
+      child: Icon(FontAwesomeIcons.facebook, color: Colors.white),
+      onPressed: () async {
+        UserCredential user = await FacebookSignInService.signInWithFacebook();
+        if (user != null) {
+          print(user);
+          Navigator.of(context).popAndPushNamed('home');
+        }
+      },
+    );
+
+    final googleLoginButton = FloatingActionButton(
+      backgroundColor: kBaseColor,
+      child: Icon(FontAwesomeIcons.google, color: Colors.white),
+      onPressed: () async {
+        User user = await GoogleSignInService.signInWithGoogle();
+        if (user != null) {
+          print(user);
+          Navigator.of(context).popAndPushNamed('home');
+        }
+      },
+    );
 
     final bottom = Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -179,7 +186,10 @@ class _LoginPageState extends State<LoginPage> {
             )
           ],
         ),
-        googleLoginButton
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[googleLoginButton, facebookLoginButton],
+        )
       ],
     );
 

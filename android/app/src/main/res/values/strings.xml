@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TTA App</string>
+    <string name="facebook_app_id">747693559425877</string> 
+    <string name="fb_login_protocol_scheme">fb747693559425877</string>
+</resources>
+
+
