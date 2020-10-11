@@ -205,7 +205,7 @@ class _RegisterPageState extends State<RegisterPage> {
           children: <Widget>[
             MaterialButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('login');
+                Navigator.of(context).popAndPushNamed('login');
               },
               child: Text(
                 "Iniciar Sesión",
