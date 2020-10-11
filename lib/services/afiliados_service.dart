@@ -3,9 +3,9 @@ import 'package:places_app/models/afiliado_model.dart';
 import 'package:places_app/services/api.dart';
 import 'package:uuid/uuid.dart';
 
-class FirebaseDB {
+class AfiliadosService {
   Api afiliadosDB = new Api('afiliados');
-  FirebaseDB() {}
+  AfiliadosService() {}
 
   void crearAfiliado(Afiliado afiliado) async {
     afiliadosDB.addDocument(afiliado.toJson());

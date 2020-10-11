@@ -4,11 +4,39 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:places_app/data/Data.dart';
 import 'package:places_app/models/afiliado_model.dart';
 import 'package:places_app/pages/afilidados_detail.dart';
+import 'package:places_app/services/afiliados_service.dart';
+import 'package:places_app/services/db_service.dart';
 
-class AfiliadosCarousel extends StatelessWidget {
+class AfiliadosCarousel extends StatefulWidget {
+  @override
+  _AfiliadosCarouselState createState() => _AfiliadosCarouselState();
+}
+
+class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
   Size _size;
+  bool isLoading = false;
+  AfiliadosService service = new AfiliadosService();
 
-  List<Afiliado> afiliados = GlobalData.afiliados;
+  List<Afiliado> afiliados = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    loadData();
+    super.initState();
+  }
+
+  void loadData() async {
+    setLoading(true);
+    afiliados = await service.loadByRating();
+    setLoading(false);
+  }
+
+  void setLoading(bool val) {
+    setState(() {
+      isLoading = val;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +50,6 @@ class AfiliadosCarousel extends StatelessWidget {
         );
       }).toList(),
       options: CarouselOptions(
-        height: _size.height * 0.27,
         aspectRatio: 16 / 9,
         viewportFraction: 0.8,
         initialPage: 0,
@@ -55,21 +82,38 @@ class AfiliadosCarousel extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              child: Image.network(a.img),
+              height: _size.height * 0.18,
+              width: _size.width * 0.8,
+              child: FadeInImage.assetNetwork(
+                placeholder: 'assets/images/loader.gif',
+                image: a.img,
+                fit: BoxFit.cover,
+              ),
             ),
             Container(
               padding: EdgeInsets.only(
                 top: 5.0,
               ),
               width: double.infinity,
-              child: Text(
-                a.nombre,
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 22.0,
-                  color: Colors.grey.shade600,
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    a.nombre,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 22.0,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                  Text("${a.rating}",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 22.0,
+                        color: Colors.grey.shade600,
+                      ))
+                ],
               ),
             )
           ],
