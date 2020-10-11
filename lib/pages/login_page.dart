@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:places_app/services/alerts_service.dart';
 import 'package:places_app/services/facebook_signin_service.dart';
 import 'package:places_app/services/google_signin_service.dart';
 import 'package:places_app/shared/user_preferences.dart';
@@ -47,6 +47,12 @@ class _LoginPageState extends State<LoginPage> {
           hintText: "Ingrese su correo electrónico",
           labelText: "Correo Electrónico",
           hintStyle: TextStyle(color: kBaseColor)),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Ingrese su correo electrónico';
+        }
+      },
+      onSaved: (String value) {},
     );
 
     final passwordField = Column(children: <Widget>[
@@ -106,27 +112,13 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
           onPressed: () async {
-            try {
-              UserCredential user = (await FirebaseAuth.instance
-                  .signInWithEmailAndPassword(
-                      email: _emailController.text,
-                      password: _passwordController.text));
-              print(user);
-              if (user != null) {
-                preferences.email = _emailController.text;
-                //TODO: Check user type
-                Navigator.of(context).popAndPushNamed('home');
-              }
-            } on FirebaseAuthException catch (e) {
-              if (e.code == 'user-not-found') {
-                print('No user found for that email.');
-              } else if (e.code == 'wrong-password') {
-                print('Wrong password provided for that user.');
-              }
-            } catch (e) {
-              print('error $e');
-              _emailController.clear();
-              _passwordController.clear();
+            UserCredential user = await loginEmailPassword(
+                _emailController.text, _passwordController.text, context);
+            print(user);
+            if (user != null) {
+              preferences.email = _emailController.text;
+              //TODO: Check user type
+              Navigator.of(context).popAndPushNamed('home');
             }
           },
         ));
@@ -180,7 +172,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             MaterialButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('register');
+                Navigator.of(context).popAndPushNamed('register');
               },
               child: Text(
                 "Registrarse",
@@ -219,5 +211,37 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Future<UserCredential> loginEmailPassword(
+      String email, String password, BuildContext context) async {
+    try {
+      UserCredential user = (await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) {
+        print(value);
+      }).catchError((onError) {
+        print(onError);
+      }));
+      print(user);
+
+      return user;
+    } on PlatformException catch (err) {
+      print('error platform $err');
+    } on FirebaseAuthException catch (e) {
+      ShowAlerts.ShowAlert(context, 'Error',
+          'Verifique que su correo y/o contraseña sean correctos');
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+      return null;
+    } catch (e) {
+      print('error $e');
+      _emailController.clear();
+      _passwordController.clear();
+      return null;
+    }
   }
 }
