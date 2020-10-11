@@ -24,6 +24,15 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = TextEditingController();
   UserPreferences preferences = new UserPreferences();
 
+  void handleLogin() async {
+    User user = await GoogleSignInService.signInWithGoogle();
+    if (user != null) {
+      preferences.email = _emailController.text;
+      //
+      Navigator.of(context).popAndPushNamed('home');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
@@ -138,13 +147,7 @@ class _LoginPageState extends State<LoginPage> {
     final googleLoginButton = FloatingActionButton(
       backgroundColor: kBaseColor,
       child: Icon(FontAwesomeIcons.google, color: Colors.white),
-      onPressed: () async {
-        User user = await GoogleSignInService.signInWithGoogle();
-        if (user != null) {
-          print(user);
-          Navigator.of(context).popAndPushNamed('home');
-        }
-      },
+      onPressed: handleLogin,
     );
 
     final bottom = Column(

@@ -9,9 +9,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   UserPreferences userPrefrences = new UserPreferences();
-  userPrefrences.email = "jovannyrch@gmail.com";
-  userPrefrences.tipoUsuario = "admin";
   await userPrefrences.initPrefs();
+
   String initialRoute;
   if (userPrefrences.isLogged) {
     initialRoute = routes.home;

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:places_app/routes/routes.dart';
+import 'package:places_app/shared/user_preferences.dart';
 
 class MenuBar extends StatefulWidget {
   MenuBar();
@@ -8,6 +10,8 @@ class MenuBar extends StatefulWidget {
 }
 
 class _MenuBarState extends State<MenuBar> {
+  UserPreferences preferences = new UserPreferences();
+
   @override
   Widget build(BuildContext context) {
     Map<String, dynamic> drawer = {
@@ -37,6 +41,12 @@ class _MenuBarState extends State<MenuBar> {
                         child: imageContainer(drawer['logo']),
                       ),
                     const Divider(),
+                    SizedBox(height: 10),
+                    Container(
+                      child: Center(child: Text(preferences.email)),
+                    ),
+                    SizedBox(height: 10),
+                    const Divider(),
                     ListTile(
                       leading: const Icon(
                         Icons.star,
@@ -59,7 +69,7 @@ class _MenuBarState extends State<MenuBar> {
                     ListTile(
                       leading: const Icon(Icons.exit_to_app, size: 20),
                       title: Text("Cerrar sesión"),
-                      onTap: () => {},
+                      onTap: handleLogOut,
                     ),
                     SizedBox(height: 54),
                   ],
@@ -70,6 +80,13 @@ class _MenuBarState extends State<MenuBar> {
         ],
       ),
     );
+  }
+
+  Widget handleLogOut() {
+    preferences.email = "";
+    preferences.tipoUsuario = "";
+    preferences.nombreAfiliacion = "";
+    Navigator.pushReplacementNamed(context, login);
   }
 
   Widget imageContainer(String link) {
