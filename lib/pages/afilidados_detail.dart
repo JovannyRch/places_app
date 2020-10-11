@@ -101,7 +101,7 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
               ),
               _row(
                 Icon(Icons.place, color: kBaseColor),
-                widget.afiliado.comoLlegar,
+                widget.afiliado.ubicacion,
               )
             ],
           ),

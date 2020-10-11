@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_page_indicator/flutter_page_indicator.dart';
 import 'package:places_app/const/const.dart';
 import 'package:places_app/pages/categories/index.dart';
 import 'package:places_app/pages/historial_page.dart';
 import 'package:places_app/pages/home_page.dart';
-
-import 'package:flutter_swiper/flutter_swiper.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -31,15 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            title: Text("Inicio"),
+            label: "Inicio",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.grid_on),
-            title: Text("Categorías"),
+            label: "Categorías",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            title: Text("Historial"),
+            label: "Historial",
           ),
         ],
         currentIndex: _selectedIndex,
