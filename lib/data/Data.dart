@@ -23,47 +23,47 @@ class GlobalData {
     Categoria(id: "16", nombre: "Autolavado", img: DEFAULT_IMAGE),
   ];
 
-  static List<AfiliadoModel> afiliados = [
-    AfiliadoModel(
+  static List<Afiliado> afiliados = [
+    Afiliado(
         id: '1',
         nombre: "Avante Llantas La Virgen",
-        comoLlegar: 'Santiaguito, 52140 Metepec, Méx.',
+        ubicacion: 'Santiaguito, 52140 Metepec, Méx.',
         img: DEFAULT_IMAGE,
         fotos: [IMG1, IMG2, IMG3],
         telefono: '+527225947467'),
-    AfiliadoModel(
+    Afiliado(
       id: '2',
       nombre: "Super llantas de Metepec",
-      comoLlegar: 'De Galeana 78, Santa Cruz, 52140 Metepec, Méx.',
+      ubicacion: 'De Galeana 78, Santa Cruz, 52140 Metepec, Méx.',
       img: DEFAULT_IMAGE,
       fotos: [IMG1, IMG2, IMG3],
       telefono: '+527225947467',
     ),
-    AfiliadoModel(
+    Afiliado(
         id: '1',
         nombre: "Dyna-Mate",
-        comoLlegar: 'Av Tecnológico 48, Llano Grande, 52149 Metepec, Méx.',
+        ubicacion: 'Av Tecnológico 48, Llano Grande, 52149 Metepec, Méx.',
         img: DEFAULT_IMAGE,
         fotos: [IMG1, IMG2, IMG3],
         telefono: '+527225947467'),
-    AfiliadoModel(
+    Afiliado(
         id: '1',
         nombre: "Avante Llantas La Virgen",
-        comoLlegar: 'Santiaguito, 52140 Metepec, Méx.',
+        ubicacion: 'Santiaguito, 52140 Metepec, Méx.',
         img: DEFAULT_IMAGE,
         fotos: [IMG1, IMG2, IMG3],
         telefono: '+527225947467'),
-    AfiliadoModel(
+    Afiliado(
         id: '2',
         nombre: "Super llantas de Metepec",
-        comoLlegar: 'De Galeana 78, Santa Cruz, 52140 Metepec, Méx.',
+        ubicacion: 'De Galeana 78, Santa Cruz, 52140 Metepec, Méx.',
         img: DEFAULT_IMAGE,
         fotos: [IMG1, IMG2, IMG3],
         telefono: '+527225947467'),
-    AfiliadoModel(
+    Afiliado(
         id: '1',
         nombre: "Dyna-Mate",
-        comoLlegar: 'Av Tecnológico 48, Llano Grande, 52149 Metepec, Méx.',
+        ubicacion: 'Av Tecnológico 48, Llano Grande, 52149 Metepec, Méx.',
         img: DEFAULT_IMAGE,
         fotos: [IMG1, IMG2, IMG3],
         telefono: '+527225947467'),

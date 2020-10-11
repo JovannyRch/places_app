@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:places_app/const/const.dart';
 import 'package:places_app/providers/push_notification_provider.dart';
-import 'package:places_app/routes/routes.dart';
+import 'package:places_app/routes/routes.dart' as routes;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,9 +38,9 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(primaryColor: kBaseColor),
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
-      title: 'places app',
-      initialRoute: 'login',
-      routes: routes,
+      title: 'TTA',
+      initialRoute: routes.registroAfilicacion,
+      routes: routes.routes,
     );
   }
 }
