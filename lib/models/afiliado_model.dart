@@ -63,6 +63,23 @@ class Afiliado {
         ubicacion: json["ubicacion"],
       );
 
+  factory Afiliado.fromMap(Map<String, dynamic> json, String id) => Afiliado(
+        id: id,
+        nombre: json["nombre"],
+        img: json["img"],
+        telefono: json["telefono"],
+        rfc: json["rfc"],
+        user: json["user"],
+        total: json["total"],
+        puntos: json["puntos"],
+        rating: json["rating"],
+        aprobado: json["aprobado"],
+        fotos: List<String>.from(json["fotos"].map((x) => x)),
+        categoria: json["categoria"],
+        latitud: json["latitud"],
+        longitud: json["longitud"],
+        ubicacion: json["ubicacion"],
+      );
   Map<String, dynamic> toJson() => {
         "id": id,
         "nombre": nombre,

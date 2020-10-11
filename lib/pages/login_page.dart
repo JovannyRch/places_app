@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:places_app/services/alerts_service.dart';
 import 'package:places_app/services/facebook_signin_service.dart';
 import 'package:places_app/services/google_signin_service.dart';
+import 'package:places_app/shared/user_preferences.dart';
 
 import '../const/const.dart';
 
@@ -21,6 +22,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  UserPreferences preferences = new UserPreferences();
 
   @override
   Widget build(BuildContext context) {
@@ -111,6 +113,8 @@ class _LoginPageState extends State<LoginPage> {
                 _emailController.text, _passwordController.text, context);
             print(user);
             if (user != null) {
+              preferences.email = _emailController.text;
+              //TODO: Check user type
               Navigator.of(context).popAndPushNamed('home');
             }
           },
