@@ -37,11 +37,11 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
     bool isSubmitting = false;
-/* 
+
     final logo = Image.asset(
-      "assets/logo.png",
-      height: mq.size.height / 4,
-    ); */
+      "assets/images/logo.png",
+      height: mq.size.height / 3,
+    );
 
     final emailField = TextFormField(
       controller: _emailController,
@@ -99,12 +99,9 @@ class _LoginPageState extends State<LoginPage> {
       )
     ]);
 
-    final fields = Padding(
-      padding: EdgeInsets.only(top: 10.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[emailField, passwordField],
-      ),
+    final fields = Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[emailField, passwordField],
     );
 
     final loginButton = Material(
@@ -196,16 +193,16 @@ class _LoginPageState extends State<LoginPage> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(36),
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 36.0),
           child: Container(
             height: mq.size.height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                //logo
+                logo,
                 fields,
                 Padding(
-                  padding: EdgeInsets.only(bottom: 150),
+                  padding: EdgeInsets.only(bottom: 30.0),
                   child: bottom,
                 ),
               ],
