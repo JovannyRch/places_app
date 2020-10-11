@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       title: 'TTA',
-      initialRoute: routes.registroAfilicacion,
+      initialRoute: routes.login,
       routes: routes.routes,
     );
   }
