@@ -6,7 +6,7 @@ import 'package:places_app/const/const.dart';
 import 'package:places_app/models/afiliado_model.dart';
 
 class AfiliadosDetailsPage extends StatefulWidget {
-  AfiliadoModel afiliado;
+  Afiliado afiliado;
 
   AfiliadosDetailsPage({this.afiliado});
 

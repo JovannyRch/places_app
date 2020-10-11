@@ -48,6 +48,8 @@ class FotosFileSlider extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            height: 150.0,
+            width: 300.0,
             child: Image.file(
               File(file.path),
               fit: BoxFit.fitHeight,

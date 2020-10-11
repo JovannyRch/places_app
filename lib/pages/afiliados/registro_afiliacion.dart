@@ -12,6 +12,7 @@ import 'package:places_app/data/Data.dart';
 import 'package:places_app/helpers/alerts_helper.dart' as alerts;
 import 'package:places_app/helpers/fotos_helper.dart';
 import 'package:places_app/models/afiliado_model.dart';
+
 import 'package:places_app/services/db_service.dart';
 import 'package:smart_select/smart_select.dart';
 
@@ -234,20 +235,21 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
 
     String urlImg = await subirImagen(fotoFile);
     List<String> urls = [];
-    fotos.map((e) async {
-      String url = await subirImagen(e);
-      urls.add(url);
-    });
+    List<Future<String>> fs = fotos.map((e) => subirImagen(e)).toList();
+    urls = await Future.wait(fs);
 
-    AfiliadoModel afiliado = new AfiliadoModel(
+    Afiliado afiliado = new Afiliado(
+      id: "",
       nombre: nombreCtrl.text,
       categoria: categoriaValue,
       telefono: telefonoCtrl.text,
-      ubicacion: ubicacionCtrl.text,
+      latitud: 0.0,
+      longitud: 0.0,
       rfc: rfcCtrl.text,
       img: urlImg,
       fotos: urls,
       user: 'jovannyrch@gmail.com',
+      aprobado: false,
     );
     db.crearAfiliado(afiliado);
     alerts.success(context, "Registro exitoso",

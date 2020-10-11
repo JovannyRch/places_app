@@ -1,32 +1,18 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:places_app/models/afiliado_model.dart';
+import 'package:places_app/services/api.dart';
 import 'package:uuid/uuid.dart';
 
 class FirebaseDB {
-  final databaseReference = FirebaseDatabase.instance.reference();
-  var uuid = Uuid();
+  Api afiliadosDB = new Api('afiliados');
   FirebaseDB() {}
 
-  void crearAfiliado(AfiliadoModel afiliado) async {
-    await databaseReference.child('afiliados').child(uuid.v1()).set({
-      'nombre': afiliado.nombre,
-      'img': afiliado.img,
-      'fotos': afiliado.fotos,
-      'telefono': afiliado.telefono,
-      'ubicacion': afiliado.ubicacion,
-      'rfc': afiliado.rfc,
-      'categoria': afiliado.categoria,
-      'user': 'jovannyrch@gmail.com'
-    });
+  void crearAfiliado(Afiliado afiliado) async {
+    afiliadosDB.addDocument(afiliado.toJson());
   }
 
-  Future<List<AfiliadoModel>> getByCategoria(String categoria) async {
-    await databaseReference
-        .child('afiliados')
-        .once()
-        .then((DataSnapshot snapshot) {
-      print('Data : ${snapshot.value}');
-    });
+  Future<List<Afiliado>> getByCategoria(String categoria) async {
+    afiliadosDB.getDataCollection();
     return [];
   }
 }

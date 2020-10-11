@@ -8,7 +8,7 @@ import 'package:places_app/pages/afilidados_detail.dart';
 class AfiliadosCarousel extends StatelessWidget {
   Size _size;
 
-  List<AfiliadoModel> afiliados = GlobalData.afiliados;
+  List<Afiliado> afiliados = GlobalData.afiliados;
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class AfiliadosCarousel extends StatelessWidget {
     );
   }
 
-  Widget _containerAfiliado(BuildContext context, AfiliadoModel a) {
+  Widget _containerAfiliado(BuildContext context, Afiliado a) {
     return GestureDetector(
       onTap: () => {
         Navigator.push(
