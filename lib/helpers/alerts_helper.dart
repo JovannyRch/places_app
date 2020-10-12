@@ -4,12 +4,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-void success(BuildContext context, String title, String message) {
+void success(BuildContext context, String title, String message, {Function f}) {
   CoolAlert.show(
     context: context,
     type: CoolAlertType.success,
     title: title,
     text: message,
+    onConfirmBtnTap: f,
   );
 }
 

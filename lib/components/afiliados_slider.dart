@@ -3,11 +3,15 @@ import 'package:carousel_slider/carousel_slider.dart';
 
 import 'package:places_app/data/Data.dart';
 import 'package:places_app/models/afiliado_model.dart';
+import 'package:places_app/models/categoria_model.dart';
 import 'package:places_app/pages/afilidados_detail.dart';
 import 'package:places_app/services/afiliados_service.dart';
 import 'package:places_app/services/db_service.dart';
 
 class AfiliadosCarousel extends StatefulWidget {
+  Categoria categoria;
+  AfiliadosCarousel({this.categoria});
+
   @override
   _AfiliadosCarouselState createState() => _AfiliadosCarouselState();
 }
@@ -28,7 +32,11 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
 
   void loadData() async {
     setLoading(true);
-    afiliados = await service.loadByRating();
+    if (widget.categoria != null) {
+      afiliados = await service.loadByCategoria(widget.categoria);
+    } else {
+      afiliados = await service.loadByRating();
+    }
     setLoading(false);
   }
 
@@ -41,6 +49,16 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
+    if (isLoading) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    if (afiliados.isEmpty && !isLoading) {
+      return Center(
+        child: Text("Aún no se han registrado afiliados en esta categoría"),
+      );
+    }
     return CarouselSlider(
       items: afiliados.map((a) {
         return Builder(

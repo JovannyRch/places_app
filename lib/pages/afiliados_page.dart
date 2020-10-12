@@ -63,7 +63,9 @@ class _AfiliadosPageState extends State<AfiliadosPage> {
       decoration: BoxDecoration(),
       width: _size.width * .9,
       height: _size.height * 0.35,
-      child: AfiliadosCarousel(),
+      child: AfiliadosCarousel(
+        categoria: widget.categoria,
+      ),
     );
   }
 

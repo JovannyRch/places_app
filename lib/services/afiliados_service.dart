@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:places_app/models/afiliado_model.dart';
+import 'package:places_app/models/categoria_model.dart';
 import 'package:places_app/services/api.dart';
 import 'package:uuid/uuid.dart';
 
@@ -19,7 +20,15 @@ class AfiliadosService {
   //
   Future<List<Afiliado>> loadByRating() async {
     var result = await afiliadosDB.getDataCollection();
-    List<Afiliado> data;
+    List<Afiliado> data = [];
+    data =
+        result.docs.map((doc) => Afiliado.fromMap(doc.data(), doc.id)).toList();
+    return data;
+  }
+
+  Future<List<Afiliado>> loadByCategoria(Categoria c) async {
+    var result = await afiliadosDB.getWhere('categoria', c.nombre);
+    List<Afiliado> data = [];
     data =
         result.docs.map((doc) => Afiliado.fromMap(doc.data(), doc.id)).toList();
     return data;

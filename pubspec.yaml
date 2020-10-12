@@ -47,6 +47,7 @@ dependencies:
   cloud_firestore: ^0.14.1+3
   shared_preferences: ^0.5.12
   connectivity: ^0.4.9+3
+  mapbox_gl: ^0.8.0
   
 dev_dependencies:
   flutter_test:

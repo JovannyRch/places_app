@@ -78,7 +78,6 @@ class _HomeScreenState extends State<HomeScreen> {
         SchedulerBinding.instance.addPostFrameCallback((_) {
           Navigator.of(context).pushNamed(registroAfilicacion);
         });
-        print("afiliacion no encontrada");
       }
     } else if (tipoUsrStr == 'admin') {
       tipoUsuario = TipoUsuario.ADMIN;

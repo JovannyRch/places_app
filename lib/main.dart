@@ -4,6 +4,8 @@ import 'package:places_app/const/const.dart';
 import 'package:places_app/providers/push_notification_provider.dart';
 import 'package:places_app/routes/routes.dart' as routes;
 import 'package:places_app/shared/user_preferences.dart';
+import 'package:places_app/storage/App.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -47,13 +49,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(primaryColor: kBaseColor),
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey,
-      title: 'TTA',
-      initialRoute: widget.initialRoute,
-      routes: routes.routes,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AppState()),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(primaryColor: kBaseColor),
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        title: 'TTA',
+        initialRoute: widget.initialRoute,
+        routes: routes.routes,
+      ),
     );
   }
 }

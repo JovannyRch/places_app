@@ -35,7 +35,6 @@ class Usuario {
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "tipoUsuario": tipoUsuario,
       };
 
@@ -44,9 +43,8 @@ class Usuario {
   }
 
   Future<Usuario> fetchData(String id) async {
-    print("Init fetchData");
     final resp = await api.getDocumentById(id);
-    print("Resp");
+
     print(resp);
     return Usuario.fromJson(resp.data());
   }

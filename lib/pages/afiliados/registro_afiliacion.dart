@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:places_app/components/blur_container.dart';
-import 'package:places_app/components/custom_app_bar.dart';
+
 import 'package:places_app/components/fotos_file_slider.dart';
 import 'package:places_app/const/const.dart';
 import 'package:places_app/data/Data.dart';
@@ -282,11 +282,15 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
       img: urlImg,
       fotos: urls,
       user: preferences.email,
+      ubicacion: ubicacionCtrl.text,
       aprobado: false,
     );
     db.crearAfiliado(afiliado);
     alerts.success(context, "Registro exitoso",
-        "Su registro será revisado para su aprobación.");
+        "Su registro será revisado para su aprobación.", f: () {
+      Navigator.pushReplacementNamed(context, home);
+    });
+
     setIsSaving(false);
   }
 

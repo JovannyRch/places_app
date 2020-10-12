@@ -56,13 +56,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget _body() {
     return SafeArea(
-        child: Container(
-      padding: EdgeInsets.only(top: 50.0, right: 20.0, left: 20.0),
       child: SingleChildScrollView(
         child: Column(
           children: [
             _publicidad(),
-            SizedBox(height: 15.0),
+            SizedBox(height: 25.0),
             _title("Afiliados"),
             AfiliadosCarousel(),
             SizedBox(height: 5.0),
@@ -71,18 +69,19 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-    ));
+    );
   }
 
   Widget _title(String title) {
     return Container(
       width: double.infinity,
+      padding: EdgeInsets.only(left: 10.0),
       child: Text(
         title,
         textAlign: TextAlign.left,
         style: TextStyle(
           color: Colors.grey.shade800,
-          fontSize: 23.0,
+          fontSize: 18.0,
           fontWeight: FontWeight.w500,
           letterSpacing: 1.3,
         ),

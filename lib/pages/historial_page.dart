@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:places_app/components/custom_header.dart';
 import 'package:places_app/data/Data.dart';
+import 'package:places_app/models/rate_model.dart';
 import 'package:places_app/models/review_model.dart';
+import 'package:places_app/storage/App.dart';
+import 'package:provider/provider.dart';
 
 class HistorialPage extends StatefulWidget {
   HistorialPage({Key key}) : super(key: key);
@@ -11,39 +14,51 @@ class HistorialPage extends StatefulWidget {
 }
 
 class _HistorialPageState extends State<HistorialPage> {
-  Review r = Review(
-    img: DEFAULT_IMAGE,
-    fecha: '02 de Oct. 2020',
-    negocio: "Avante Llantas La Virgen",
-    localizacion: "Santiaguito, 52140 Metepec, Méx.",
-    calificacion: 4,
-    comentario:
-        "Muy ricas las carnitas aparte las salss deliciosas el servicio es excelente.",
-  );
-
+  List<Rating> ratings = [];
   Size _size;
+  bool loading = false;
+  AppState appState = new AppState();
+
+  @override
+  void initState() {
+    //init();
+    super.initState();
+  }
+
+  void init() async {}
+
+  setLoading(bool val) {
+    setState(() {
+      loading = val;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
+    appState = Provider.of<AppState>(context);
+    ratings = appState.ratings;
+
     return Scaffold(
-      body: SafeArea(
-          child: Column(
-        children: <Widget>[
-          CustomHeader(title: "Historial de Afiliados"),
-          Expanded(
-              child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: 10.0),
-                ...List.generate(4, (index) => _reviewContainer(r)).toList(),
-              ],
+      body: loading
+          ? Center(child: CircularProgressIndicator())
+          : SafeArea(
+              child: Column(
+                children: <Widget>[
+                  CustomHeader(title: "Historial de calificaciones"),
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        SizedBox(height: 10.0),
+                        ...ratings.map((r) => _reviewContainer(r)).toList(),
+                      ],
+                    ),
+                  ))
+                ],
+              ),
             ),
-          ))
-        ],
-      )),
     );
-    ;
   }
 
   Widget _iconPlace(String url) {
@@ -62,7 +77,7 @@ class _HistorialPageState extends State<HistorialPage> {
     );
   }
 
-  Widget _reviewContainer(Review r) {
+  Widget _reviewContainer(Rating r) {
     return Container(
       width: _size.width * 0.9,
       height: _size.height * 0.15,
@@ -76,11 +91,11 @@ class _HistorialPageState extends State<HistorialPage> {
     );
   }
 
-  Widget _reviewTitle(Review r) {
+  Widget _reviewTitle(Rating r) {
     return Row(
       children: [
         Container(
-          child: _iconPlace(r.img),
+          child: _iconPlace(r.imgNegocio),
           width: 60.0,
         ),
         SizedBox(
@@ -89,10 +104,10 @@ class _HistorialPageState extends State<HistorialPage> {
         Container(
           child: Column(
             children: [
-              _title(r.negocio),
-              _subtitle(r.localizacion),
+              _title(r.nombreAfiliacion),
+              /* _subtitle(), */
               _rating(
-                r.calificacion.toDouble(),
+                r.rate.toDouble(),
               ),
             ],
           ),
