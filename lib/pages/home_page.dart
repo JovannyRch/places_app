@@ -4,6 +4,7 @@ import 'package:places_app/components/afiliados_slider.dart';
 import 'package:places_app/components/noticias_slider.dart';
 import 'package:places_app/const/const.dart';
 import 'package:places_app/menu.dart';
+import 'package:places_app/shared/user_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -15,6 +16,27 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   Size _size;
+  UserPreferences preferences = new UserPreferences();
+  bool isChecking = true;
+  @override
+  void initState() {
+    check();
+    super.initState();
+  }
+
+  void check() async {
+    setState(() {
+      isChecking = true;
+    });
+    if (preferences.tipoUsuario == 'afiliado') {
+      //Check negocio
+    } else {
+      setState(() {
+        isChecking = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;

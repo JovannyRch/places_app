@@ -18,7 +18,7 @@ const registroAfilicacion = "registroAfiliacion";
 const resetPassword = "resetPassword";
 
 final routes = {
-  home: (BuildContext context) => HomePage(),
+  home: (BuildContext context) => HomeScreen(),
   login: (BuildContext context) => LoginPage(),
   register: (BuildContext context) => RegisterPage(),
   tutorial: (BuildContext context) => TutorialPage(),

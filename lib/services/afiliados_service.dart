@@ -24,4 +24,9 @@ class AfiliadosService {
         result.docs.map((doc) => Afiliado.fromMap(doc.data(), doc.id)).toList();
     return data;
   }
+
+  Future<Afiliado> getByUser(String email) async {
+    final resp = await afiliadosDB.getWhere('user', email);
+    print(resp);
+  }
 }

@@ -36,4 +36,8 @@ class Api {
   Future<void> updateDocument(Map data, String id) {
     return ref.doc(id).update(data);
   }
+
+  Future<DocumentSnapshot> getWhere(String key, String value) async {
+    ref.where(key, isEqualTo: value).get();
+  }
 }

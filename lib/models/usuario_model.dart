@@ -42,4 +42,9 @@ class Usuario {
   Future save(String id) async {
     await api.addDocumentWithId(id, this.toJson());
   }
+
+  Future<Usuario> fetchData(String id) async {
+    final resp = await api.getDocumentById(id);
+    this.tipoUsuario = Usuario.fromJson(resp.data()).tipoUsuario;
+  }
 }
