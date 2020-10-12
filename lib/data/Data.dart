@@ -13,14 +13,27 @@ const IMG2 =
 const IMG3 =
     'https://img.autosblogmexico.com/2019/12/20/hVoAV2LR/bugatti-chiron-8591.png';
 
+const MECANICO =
+    'https://firebasestorage.googleapis.com/v0/b/tta-app-20c4c.appspot.com/o/Categories%2Fmecanico.jpeg?alt=media&token=a1927787-cab3-438b-91f3-93364c3eb842';
+const GRUAS =
+    'https://firebasestorage.googleapis.com/v0/b/tta-app-20c4c.appspot.com/o/Categories%2Fgruas.jpg?alt=media&token=e80ef955-765f-476b-948e-e87a03ac7c48';
+const ELECTRICO =
+    'https://firebasestorage.googleapis.com/v0/b/tta-app-20c4c.appspot.com/o/Categories%2Felectrico.jpg?alt=media&token=24f791b5-6d94-43ce-95c6-35714abc6535';
+const ALINEACION =
+    'https://firebasestorage.googleapis.com/v0/b/tta-app-20c4c.appspot.com/o/Categories%2Falineacionybalanceo.jpg?alt=media&token=0c5ae9c1-64b0-4a87-8620-4010d993854a';
+const VULCANIZADORA =
+    'https://firebasestorage.googleapis.com/v0/b/tta-app-20c4c.appspot.com/o/Categories%2Fvulcanizadora.jpg?alt=media&token=38aee565-ce21-40a7-837b-34f9cfa0c2de';
+const AUTOLAVADO =
+    'https://firebasestorage.googleapis.com/v0/b/tta-app-20c4c.appspot.com/o/Categories%2Fautolavado.jpg?alt=media&token=a2e72b35-39af-4aeb-9045-e1ba8915f126';
+
 class GlobalData {
   static List<Categoria> categorias = [
-    Categoria(id: "1", nombre: "Mecánicos", img: DEFAULT_IMAGE),
-    Categoria(id: "2", nombre: "Grúas", img: DEFAULT_IMAGE),
-    Categoria(id: "13", nombre: "Vulcanizadora", img: DEFAULT_IMAGE),
-    Categoria(id: "14", nombre: "Eléctrico", img: DEFAULT_IMAGE),
-    Categoria(id: "15", nombre: "Alineación y balanceo", img: DEFAULT_IMAGE),
-    Categoria(id: "16", nombre: "Autolavado", img: DEFAULT_IMAGE),
+    Categoria(id: "1", nombre: "Mecánicos", img: MECANICO),
+    Categoria(id: "2", nombre: "Grúas", img: GRUAS),
+    Categoria(id: "13", nombre: "Vulcanizadora", img: VULCANIZADORA),
+    Categoria(id: "14", nombre: "Eléctrico", img: ELECTRICO),
+    Categoria(id: "15", nombre: "Alineación y balanceo", img: ALINEACION),
+    Categoria(id: "16", nombre: "Autolavado", img: AUTOLAVADO),
   ];
 
   static List<Afiliado> afiliados = [

@@ -75,10 +75,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void handleLoginWithGoogle() async {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-    _formKey.currentState.save();
     User user = await GoogleSignInService.signInWithGoogle();
     handleGoHome(user: user);
   }
