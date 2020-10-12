@@ -105,7 +105,7 @@ class _HistorialPageState extends State<HistorialPage> {
           child: Column(
             children: [
               _title(r.nombreAfiliacion),
-              /* _subtitle(), */
+              _subtitle(r.ubicacion ?? ""),
               _rating(
                 r.rate.toDouble(),
               ),
@@ -117,6 +117,7 @@ class _HistorialPageState extends State<HistorialPage> {
   }
 
   Widget _subtitle(String text) {
+    if (text.isEmpty) return Container();
     return Container(
       width: _size.width * 0.7,
       child: Text(

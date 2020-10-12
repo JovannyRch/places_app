@@ -7,6 +7,8 @@ import 'package:places_app/models/categoria_model.dart';
 import 'package:places_app/pages/afilidados_detail.dart';
 import 'package:places_app/services/afiliados_service.dart';
 import 'package:places_app/services/db_service.dart';
+import 'package:places_app/storage/App.dart';
+import 'package:provider/provider.dart';
 
 class AfiliadosCarousel extends StatefulWidget {
   Categoria categoria;
@@ -22,6 +24,7 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
   AfiliadosService service = new AfiliadosService();
 
   List<Afiliado> afiliados = [];
+  AppState appState = new AppState();
 
   @override
   void initState() {
@@ -48,6 +51,7 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
 
   @override
   Widget build(BuildContext context) {
+    appState = Provider.of<AppState>(context);
     _size = MediaQuery.of(context).size;
     if (isLoading) {
       return Center(
@@ -60,7 +64,7 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
       );
     }
     return CarouselSlider(
-      items: afiliados.map((a) {
+      items: appState.afiliados.map((a) {
         return Builder(
           builder: (BuildContext context) {
             return _containerAfiliado(context, a);

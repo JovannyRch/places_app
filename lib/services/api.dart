@@ -40,4 +40,12 @@ class Api {
   Future<QuerySnapshot> getWhere(String key, String value) {
     return ref.where(key, isEqualTo: value).get();
   }
+
+  Future<QuerySnapshot> orderBy(String key) {
+    return ref
+        .orderBy(
+          key,
+        )
+        .get();
+  }
 }

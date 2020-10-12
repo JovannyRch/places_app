@@ -13,15 +13,15 @@ String ratingToJson(List<Rating> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Rating {
-  Rating({
-    this.id,
-    this.rate,
-    this.afiliadoId,
-    this.usuarioId,
-    this.nombreAfiliacion,
-    this.imgNegocio,
-    this.nombreUsuario,
-  });
+  Rating(
+      {this.id,
+      this.rate,
+      this.afiliadoId,
+      this.usuarioId,
+      this.nombreAfiliacion,
+      this.imgNegocio,
+      this.nombreUsuario,
+      this.ubicacion});
 
   String id;
   int rate;
@@ -30,6 +30,7 @@ class Rating {
   String nombreAfiliacion;
   String imgNegocio;
   String nombreUsuario;
+  String ubicacion;
 
   static Api api = new Api("ratings");
 
@@ -41,6 +42,7 @@ class Rating {
         nombreAfiliacion: json["nombre_afiliacion"],
         imgNegocio: json["img_negocio"],
         nombreUsuario: json["nombre_usuario"],
+        ubicacion: json["ubicacion"],
       );
 
   factory Rating.fromMap(Map<String, dynamic> json, String id) => Rating(
@@ -50,7 +52,7 @@ class Rating {
         usuarioId: json["usuario_id"],
         nombreAfiliacion: json["nombre_afiliacion"],
         imgNegocio: json["img_negocio"],
-        nombreUsuario: json["nombre_usuario"],
+        ubicacion: json["ubicacion"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,6 +63,7 @@ class Rating {
         "nombre_afiliacion": nombreAfiliacion,
         "img_negocio": imgNegocio,
         "nombre_usuario": nombreUsuario,
+        "ubicacion": ubicacion,
       };
 
   void save() async {

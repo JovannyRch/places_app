@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:places_app/services/api.dart';
+
 List<Afiliado> afiliadoFromJson(String str) =>
     List<Afiliado>.from(json.decode(str).map((x) => Afiliado.fromJson(x)));
 
@@ -45,6 +47,8 @@ class Afiliado {
   double longitud;
   String ubicacion;
 
+  static Api api = new Api('afiliados');
+
   factory Afiliado.fromJson(Map<String, dynamic> json) => Afiliado(
         id: json["id"],
         nombre: json["nombre"],
@@ -72,7 +76,7 @@ class Afiliado {
         user: json["user"],
         total: json["total"],
         puntos: json["puntos"],
-        rating: json["rating"],
+        rating: double.parse(json["rating"].toString()),
         aprobado: json["aprobado"],
         fotos: List<String>.from(json["fotos"].map((x) => x)),
         categoria: json["categoria"],
@@ -97,4 +101,30 @@ class Afiliado {
         "longitud": longitud,
         "ubicacion": ubicacion,
       };
+
+  static Future<Afiliado> getById(String id) async {
+    final resp = await api.getDocumentById(id);
+    return Afiliado.fromMap(resp.data(), resp.id);
+  }
+
+  Future<void> addRating(int rating) async {
+    final newTotal = (this.total ?? 0) + 1;
+    final newPuntos = (this.puntos ?? 0) + rating;
+    final prom = this.total > 0
+        ? double.parse((newPuntos / newTotal).toStringAsFixed(2))
+        : 0.0;
+    final Map<String, dynamic> data = {
+      'total': newTotal,
+      'puntos': newPuntos,
+      'rating': prom
+    };
+    await api.updateDocument(data, id);
+  }
+
+  static Future<List<Afiliado>> orderByRating() async {
+    final resp = await api.orderBy("rating");
+    return resp.docs
+        .map((doc) => Afiliado.fromMap(doc.data(), doc.id))
+        .toList();
+  }
 }

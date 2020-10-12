@@ -114,8 +114,7 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
             ));
   }
 
-  void handleCalificar(int calificacion) {
-    //print("Calificacion $calificacion");
+  void handleCalificar(int calificacion) async {
     Rating rating = new Rating(
       rate: calificacion,
       afiliadoId: widget.afiliado.id,
@@ -123,10 +122,14 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
       nombreAfiliacion: widget.afiliado.nombre,
       imgNegocio: widget.afiliado.img,
       nombreUsuario: "",
+      ubicacion: widget.afiliado.ubicacion ?? '',
     );
     rating.save();
     appState.updateRatings();
-    showInSnackBar("Califición guardada");
+    appState.updateAfiliados();
+    Afiliado a = await Afiliado.getById(widget.afiliado.id);
+    await a.addRating(calificacion);
+    showInSnackBar("Calificación guardada");
     setCalificando(false);
   }
 

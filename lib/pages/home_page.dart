@@ -5,6 +5,8 @@ import 'package:places_app/components/noticias_slider.dart';
 import 'package:places_app/const/const.dart';
 import 'package:places_app/menu.dart';
 import 'package:places_app/shared/user_preferences.dart';
+import 'package:places_app/storage/App.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -17,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   Size _size;
   UserPreferences preferences = new UserPreferences();
+  AppState appState = new AppState();
 
   @override
   void initState() {
@@ -25,6 +28,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    appState = Provider.of<AppState>(context);
     _size = MediaQuery.of(context).size;
     final arg = ModalRoute.of(context).settings.arguments;
 
