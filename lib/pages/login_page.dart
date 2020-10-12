@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:places_app/components/blur_container.dart';
 import 'package:places_app/helpers/alerts_helper.dart';
+import 'package:places_app/routes/routes.dart';
 import 'package:places_app/services/facebook_signin_service.dart';
 import 'package:places_app/services/google_signin_service.dart';
 import 'package:places_app/shared/user_preferences.dart';
@@ -25,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   UserPreferences preferences = new UserPreferences();
+  bool isSubmitting = false;
 
   @override
   void initState() {
@@ -40,37 +43,54 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null) {
       preferences.email = _emailController.text;
       //Check user type
-      Navigator.of(context).popAndPushNamed('home');
+      Navigator.of(context).popAndPushNamed(home);
     }
+  }
+
+  void handleGoHome({UserCredential userCredential = null, User user = null}) {
+    setSubmitting(false);
+    if (user != null || userCredential != null) {
+      preferences.email = _emailController.text;
+      Navigator.of(context).popAndPushNamed(home);
+    }
+  }
+
+  void setSubmitting(bool val) {
+    setState(() {
+      isSubmitting = val;
+    });
   }
 
   void handleLoginEmailPassword() async {
+    setSubmitting(true);
+    if (!_formKey.currentState.validate()) {
+      setSubmitting(false);
+      return;
+    }
+    _formKey.currentState.save();
+
     UserCredential user =
         await signIn(_emailController.text, _passwordController.text);
-    if (user != null) {
-      preferences.email = _emailController.text;
-      //Check user type
-      Navigator.of(context).popAndPushNamed('home');
-    }
+    handleGoHome(userCredential: user);
   }
 
-  void handleLogin() async {
+  void handleLoginWithGoogle() async {
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
     User user = await GoogleSignInService.signInWithGoogle();
-    if (user != null) {
-      preferences.email = _emailController.text;
-      //
-      Navigator.of(context).popAndPushNamed('home');
-    }
+    handleGoHome(user: user);
+  }
+
+  void handleLoginWithFacebook() async {
+    UserCredential user = await FacebookSignInService.signInWithFacebook();
+    handleGoHome(userCredential: user);
   }
 
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-    bool isSubmitting = false;
 
     final logo = Image.asset(
       "assets/images/logo.png",
@@ -169,45 +189,21 @@ class _LoginPageState extends State<LoginPage> {
                   fontSize: 20.0,
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
-          onPressed: () async {
-            if (!_formKey.currentState.validate()) {
-              return;
-            } else {
-              _formKey.currentState.save();
-              try {
-                UserCredential user = await loginEmailPassword(
-                    _emailController.text, _passwordController.text, context);
-
-                if (user != null) {
-                  preferences.email = _emailController.text;
-                  Navigator.of(context).popAndPushNamed('home');
-                }
-              } catch (e) {
-                error(context, "Error",
-                    "Verifique que sus credenciales sean correctas");
-              }
-            }
-          },
+          onPressed: handleLoginEmailPassword,
         ));
 
     final facebookLoginButton = FloatingActionButton(
       heroTag: "google",
       backgroundColor: kBaseColor,
       child: Icon(FontAwesomeIcons.facebook, color: Colors.white),
-      onPressed: () async {
-        UserCredential user = await FacebookSignInService.signInWithFacebook();
-        if (user != null) {
-          print(user);
-          Navigator.of(context).popAndPushNamed('home');
-        }
-      },
+      onPressed: handleLoginWithFacebook,
     );
 
     final googleLoginButton = FloatingActionButton(
       heroTag: "fb",
       backgroundColor: kBaseColor,
       child: Icon(FontAwesomeIcons.google, color: Colors.white),
-      onPressed: handleLogin,
+      onPressed: handleLoginWithGoogle,
     );
 
     final bottom = Column(
@@ -253,25 +249,31 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 36.0),
-          child: Container(
-            height: mq.size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                logo,
-                fields,
-                Padding(
-                  padding: EdgeInsets.only(bottom: 30.0),
-                  child: bottom,
+      body: BlurContainer(
+        isLoading: isSubmitting,
+        text: "Iniciando sesión",
+        children: [
+          Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 36.0),
+              child: Container(
+                height: mq.size.height,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    logo,
+                    fields,
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 30.0),
+                      child: bottom,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }
@@ -306,6 +308,7 @@ class _LoginPageState extends State<LoginPage> {
         default:
           errorMessage = "An undefined Error happened.";
       }
+      print(errorMessage);
       return null;
     }
 
