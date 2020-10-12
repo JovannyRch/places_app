@@ -132,12 +132,17 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
                       color: Colors.grey.shade600,
                     ),
                   ),
-                  Text("${a.rating}",
+                  Row(children: [
+                    Icon(Icons.star, color: Colors.yellow[800]),
+                    Text(
+                      "${a.rating}",
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
                         fontSize: 22.0,
                         color: Colors.grey.shade600,
-                      ))
+                      ),
+                    )
+                  ]),
                 ],
               ),
             )
