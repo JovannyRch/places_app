@@ -26,7 +26,14 @@ class AfiliadosService {
   }
 
   Future<Afiliado> getByUser(String email) async {
-    final resp = await afiliadosDB.getWhere('user', email);
-    print(resp);
+    try {
+      final resp = await afiliadosDB.getWhere('user', email);
+      if (resp.docs.length > 0) {
+        return Afiliado.fromMap(resp.docs.first.data(), resp.docs.first.id);
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
   }
 }

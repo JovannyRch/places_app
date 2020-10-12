@@ -1,6 +1,6 @@
 import 'package:places_app/pages/afiliados/registro_afiliacion.dart';
 import 'package:places_app/pages/categories/index.dart';
-import 'package:places_app/pages/home_page.dart';
+
 import 'package:places_app/pages/login_page.dart';
 import 'package:places_app/pages/reset_password_page.dart';
 

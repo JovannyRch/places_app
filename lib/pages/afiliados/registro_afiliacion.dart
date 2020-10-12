@@ -12,8 +12,10 @@ import 'package:places_app/data/Data.dart';
 import 'package:places_app/helpers/alerts_helper.dart' as alerts;
 import 'package:places_app/helpers/fotos_helper.dart';
 import 'package:places_app/models/afiliado_model.dart';
+import 'package:places_app/routes/routes.dart';
 
 import 'package:places_app/services/db_service.dart';
+import 'package:places_app/shared/user_preferences.dart';
 import 'package:smart_select/smart_select.dart';
 
 class RegistroAfiliacion extends StatefulWidget {
@@ -36,6 +38,8 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
   FirebaseDB db = FirebaseDB();
   List<PickedFile> fotos = [];
 
+  UserPreferences preferences = new UserPreferences();
+
   String categoriaValue = '';
   List<S2Choice<String>> options = [
     ...GlobalData.categorias
@@ -47,12 +51,12 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: customAppBar(
+      /*  appBar: customAppBar(
         context,
         'Registro de afiliado',
         center: true,
         elevation: 0,
-      ),
+      ), */
       body: BlurContainer(
         isLoading: isSaving,
         text: "Registrando afiliación, espere un momento",
@@ -87,6 +91,28 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Column(
+                  children: [
+                    Text(
+                      "Paso 2",
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    Text(
+                      "Registro de afiliacion",
+                      style: TextStyle(
+                        color: Colors.black87,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 20.0),
                 _containerImg(),
                 TextFormField(
                   controller: nombreCtrl,
@@ -122,7 +148,7 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
                       setState(() => categoriaValue = state.value),
                 ),
                 _fotosContainer(),
-                /* SizedBox(
+                SizedBox(
                   height: 20.0,
                 ),
                 Container(
@@ -131,20 +157,26 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
-                    color: kBaseColor,
-                    onPressed: isSaving ? null : handleRegister,
+                    onPressed: handleLogOut,
                     child: Text(
-                      "Registrar",
-                      style: TextStyle(color: Colors.white),
+                      "Cancelar",
+                      style: TextStyle(color: Colors.grey),
                     ),
                   ),
-                ) */
+                )
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void handleLogOut() {
+    preferences.email = "";
+    preferences.tipoUsuario = "";
+    preferences.nombreAfiliacion = "";
+    Navigator.pushReplacementNamed(context, login);
   }
 
   void handleAddFoto() async {
@@ -249,7 +281,7 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
       rfc: rfcCtrl.text,
       img: urlImg,
       fotos: urls,
-      user: 'jovannyrch@gmail.com',
+      user: preferences.email,
       aprobado: false,
     );
     db.crearAfiliado(afiliado);

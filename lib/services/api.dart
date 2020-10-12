@@ -37,7 +37,7 @@ class Api {
     return ref.doc(id).update(data);
   }
 
-  Future<DocumentSnapshot> getWhere(String key, String value) async {
-    ref.where(key, isEqualTo: value).get();
+  Future<QuerySnapshot> getWhere(String key, String value) {
+    return ref.where(key, isEqualTo: value).get();
   }
 }

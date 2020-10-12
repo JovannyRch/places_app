@@ -17,24 +17,10 @@ class _HomePageState extends State<HomePage> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   Size _size;
   UserPreferences preferences = new UserPreferences();
-  bool isChecking = true;
+
   @override
   void initState() {
-    check();
     super.initState();
-  }
-
-  void check() async {
-    setState(() {
-      isChecking = true;
-    });
-    if (preferences.tipoUsuario == 'afiliado') {
-      //Check negocio
-    } else {
-      setState(() {
-        isChecking = false;
-      });
-    }
   }
 
   @override
@@ -58,7 +44,7 @@ class _HomePageState extends State<HomePage> {
         _body(),
         Positioned(
           left: 10,
-          top: 20,
+          top: 25,
           child: IconButton(
             icon: Icon(Icons.menu),
             onPressed: () => scaffoldKey.currentState.openDrawer(),

@@ -44,7 +44,10 @@ class Usuario {
   }
 
   Future<Usuario> fetchData(String id) async {
+    print("Init fetchData");
     final resp = await api.getDocumentById(id);
-    this.tipoUsuario = Usuario.fromJson(resp.data()).tipoUsuario;
+    print("Resp");
+    print(resp);
+    return Usuario.fromJson(resp.data());
   }
 }

@@ -19,7 +19,7 @@ class UserPreferences {
   }
 
   get tipoUsuario {
-    return _prefs.getString("tipoUsuario") ?? 'normal';
+    return _prefs.getString("tipoUsuario") ?? '';
   }
 
   set tipoUsuario(String tipo) {
@@ -27,7 +27,15 @@ class UserPreferences {
   }
 
   get nombreAfiliacion {
-    return _prefs.getString("nombreAfiliacion") ?? 'normal';
+    return _prefs.getString("nombreAfiliacion") ?? '';
+  }
+
+  get afiliacionAprobada {
+    return _prefs.getBool("afiliacionAprobada") ?? false;
+  }
+
+  set afiliacionAprobada(bool val) {
+    _prefs.setBool("afiliacionAprobada", val);
   }
 
   set nombreAfiliacion(String tipo) {

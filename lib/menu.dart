@@ -34,16 +34,21 @@ class _MenuBarState extends State<MenuBar> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (drawer['logo'] != null)
-                      Container(
-                        height: 38,
-                        margin:
-                            const EdgeInsets.only(bottom: 10, top: 10, left: 5),
-                        child: imageContainer(drawer['logo']),
+                      Center(
+                        child: Container(
+                          height: 60,
+                          margin: const EdgeInsets.only(
+                              bottom: 10, top: 10, left: 5),
+                          child: imageContainer(drawer['logo']),
+                        ),
                       ),
                     const Divider(),
                     SizedBox(height: 10),
                     Container(
                       child: Center(child: Text(preferences.email)),
+                    ),
+                    Container(
+                      child: Center(child: Text(preferences.tipoUsuario)),
                     ),
                     SizedBox(height: 10),
                     const Divider(),

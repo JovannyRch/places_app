@@ -374,7 +374,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           SizedBox(height: 10.0),
                           Text(
-                            "Registro de afiliado",
+                            "Registro de usuario afiliado",
                             style: TextStyle(
                               color: Colors.black87,
                               fontSize: 20.0,
