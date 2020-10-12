@@ -20,7 +20,7 @@ class FotosSlider extends StatelessWidget {
         );
       }).toList(),
       options: CarouselOptions(
-        height: _size.height * 0.15,
+        height: _size.width * 0.30,
         aspectRatio: 10 / 9,
         viewportFraction: 0.5,
         initialPage: 0,
@@ -46,6 +46,7 @@ class FotosSlider extends StatelessWidget {
       child: Column(
         children: [
           Container(
+            height: _size.width * 0.3,
             child: Image.network(
               url,
               fit: BoxFit.cover,

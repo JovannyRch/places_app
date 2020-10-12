@@ -58,16 +58,18 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
         child: Container(
       padding: EdgeInsets.only(top: 50.0, right: 20.0, left: 20.0),
-      child: Column(
-        children: [
-          _publicidad(),
-          SizedBox(height: 15.0),
-          _title("Afiliados"),
-          AfiliadosCarousel(),
-          SizedBox(height: 5.0),
-          _title("Contenido"),
-          NoticiasSlider(),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            _publicidad(),
+            SizedBox(height: 15.0),
+            _title("Afiliados"),
+            AfiliadosCarousel(),
+            SizedBox(height: 5.0),
+            _title("Contenido"),
+            NoticiasSlider(),
+          ],
+        ),
       ),
     ));
   }

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
+import 'package:places_app/components/blur_container.dart';
 import 'package:places_app/helpers/alerts_helper.dart';
 import 'package:places_app/models/usuario_model.dart';
 import 'package:places_app/pages/login_page.dart';
@@ -27,10 +28,17 @@ class _RegisterPageState extends State<RegisterPage> {
   MediaQueryData mq;
   bool isAfiliado = false;
   UserPreferences preferences = new UserPreferences();
+  bool isSubmitting = false;
 
   void handleRegister() async {
     try {
+      setState(() {
+        isSubmitting = true;
+      });
       if (!_formKey.currentState.validate()) {
+        setState(() {
+          isSubmitting = false;
+        });
         return;
       } else {
         _formKey.currentState.save();
@@ -43,20 +51,27 @@ class _RegisterPageState extends State<RegisterPage> {
         if (user != null) {
           if (isAfiliado) {
             Usuario usuario = new Usuario(tipoUsuario: "afiliado");
-            usuario.save(_emailController.text);
+            await usuario.save(_emailController.text);
             preferences.email = _emailController.text.toLowerCase();
             preferences.tipoUsuario = "afiliado";
           } else {
             Usuario usuario = new Usuario();
-            usuario.save(_emailController.text);
+            await usuario.save(_emailController.text);
+            preferences.email = _emailController.text.toLowerCase();
             preferences.tipoUsuario = "normal";
           }
           await user.user.updateProfile(displayName: _nameController.text);
           //
+          setState(() {
+            isSubmitting = false;
+          });
           Navigator.pushReplacementNamed(context, home);
         }
       }
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        isSubmitting = false;
+      });
       if (e.code == 'weak-password') {
         showAlert(context, "Contraseña débil", "Ingrese una contraseña segura");
       } else if (e.code == 'email-already-in-use') {
@@ -64,6 +79,9 @@ class _RegisterPageState extends State<RegisterPage> {
             context, "Correo no disponible", "El correo ya esta registrado");
       }
     } catch (e) {
+      setState(() {
+        isSubmitting = false;
+      });
       print('error $e');
       _emailController.clear();
       _nameController.clear();
@@ -78,7 +96,6 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context);
 
-    bool isSubmitting = false;
     final logo = Image.asset(
       "assets/images/logo.png",
       height: mq.size.height / 8,
@@ -275,29 +292,28 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     final registerButton = Material(
-        elevation: 5.0,
-        borderRadius: BorderRadius.circular(25.0),
-        color: kBaseColor,
-        child: MaterialButton(
-          minWidth: mq.size.width / 1.2,
-          padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
-          child: Text(!isAfiliado ? "Registrarse" : "Continuar",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold)),
-          onPressed: handleRegister,
-        ));
+      elevation: 5.0,
+      borderRadius: BorderRadius.circular(25.0),
+      color: kBaseColor,
+      child: MaterialButton(
+        minWidth: mq.size.width / 1.2,
+        padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
+        child: Text(!isAfiliado ? "Registrarse" : "Continuar",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)),
+        onPressed: handleRegister,
+      ),
+    );
 
     final bottom = Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         registerButton,
-        /*  Padding(
-          padding: EdgeInsets.only(8.0),
-        ), */
+        SizedBox(height: 10.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -348,52 +364,55 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       body: Form(
         key: _formKey,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 36.0),
-          child: Container(
-            height: mq.size.height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                logo,
-                !isAfiliado
-                    ? Text(
-                        "Registro de usuario",
-                        style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          Text(
-                            "Paso 1",
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          SizedBox(height: 10.0),
-                          Text(
-                            "Registro de usuario afiliado",
+        child: BlurContainer(
+          isLoading: isSubmitting,
+          text: "Registrando usuario",
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 36.0),
+              child: Container(
+                height: mq.size.height,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    logo,
+                    !isAfiliado
+                        ? Text(
+                            "Registro de usuario",
                             style: TextStyle(
                               color: Colors.black87,
                               fontSize: 20.0,
                               fontWeight: FontWeight.w500,
                             ),
+                          )
+                        : Column(
+                            children: [
+                              Text(
+                                "Paso 1",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              SizedBox(height: 10.0),
+                              Text(
+                                "Registro de usuario afiliado",
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                fields,
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: bottom,
+                    fields,
+                    bottom,
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );

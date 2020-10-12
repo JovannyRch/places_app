@@ -40,14 +40,18 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
     return SafeArea(
         child: Stack(
       children: [
-        Column(
-          children: [
-            _fotoMain(),
-            TitleComponent("Fotos"),
-            FotosSlider(fotos: widget.afiliado.fotos),
-            SizedBox(height: 20.0),
-            _details(),
-          ],
+        Container(
+          height: _size.height * 0.9,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              _fotoMain(),
+              TitleComponent("Fotos"),
+              FotosSlider(fotos: widget.afiliado.fotos),
+              SizedBox(height: 20.0),
+              _details(),
+            ],
+          ),
         ),
         Positioned(
           child: _calificar(),
@@ -111,6 +115,7 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
   }
 
   Widget _row(Icon icon, String info) {
+    if (info == null) return Container();
     return Container(
       padding: EdgeInsets.only(left: 15.0),
       margin: EdgeInsets.only(bottom: 10.0),
@@ -126,7 +131,7 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 new Text(
-                  info,
+                  info ?? '',
                   style: TextStyle(
                     fontSize: 17.0,
                     fontWeight: FontWeight.w400,
@@ -142,25 +147,26 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
 
   Widget _fotoMain() {
     return Container(
-      height: _size.height * 0.4,
+      height: _size.height * 0.33,
       padding: EdgeInsets.symmetric(horizontal: 10.0),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.network(
-            widget.afiliado.img,
-            fit: BoxFit.cover,
-          ),
           Container(
-            margin: EdgeInsets.only(top: 15.0),
-            width: double.infinity,
-            child: Text(
-              widget.afiliado.nombre,
-              style: TextStyle(
-                fontSize: 27.0,
-                fontWeight: FontWeight.w700,
-              ),
+            height: _size.height * 0.25,
+            child: Image.network(
+              widget.afiliado.img,
+              fit: BoxFit.cover,
             ),
-          )
+          ),
+          Text(
+            widget.afiliado.nombre,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              fontSize: 27.0,
+              fontWeight: FontWeight.w700,
+            ),
+          ),
         ],
       ),
     );
