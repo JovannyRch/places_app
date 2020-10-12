@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:places_app/helpers/alerts_helper.dart';
-import 'package:places_app/services/alerts_service.dart';
 import 'package:places_app/services/facebook_signin_service.dart';
 import 'package:places_app/services/google_signin_service.dart';
 import 'package:places_app/shared/user_preferences.dart';
@@ -145,7 +144,7 @@ class _LoginPageState extends State<LoginPage> {
                     .caption
                     .copyWith(color: kBaseColor)),
             onPressed: () {
-              //Forget password
+              Navigator.of(context).popAndPushNamed('resetPassword');
             },
           )
         ],
@@ -327,7 +326,7 @@ class _LoginPageState extends State<LoginPage> {
     } on PlatformException catch (err) {
       print('error platform $err');
     } on FirebaseAuthException catch (e) {
-      ShowAlerts.ShowAlert(context, 'Error',
+      showAlert(context, 'Error',
           'Verifique que su correo y/o contraseña sean correctos');
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -341,5 +340,27 @@ class _LoginPageState extends State<LoginPage> {
       _passwordController.clear();
       return null;
     }
+  }
+
+  void showAlert(BuildContext context, String title, String content) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            title: Text(title),
+            content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[Text(content)]),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () =>
+                      Navigator.of(context).popAndPushNamed('login'),
+                  child: Text('OK'))
+            ],
+          );
+        });
   }
 }
