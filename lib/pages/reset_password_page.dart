@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:places_app/services/alerts_service.dart';
 
 import '../const/const.dart';
 
@@ -37,8 +36,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 borderSide: BorderSide(
               color: Colors.red,
             )),
-            hintText: "Ingrese su correo electrónico",
-            labelText: "Correo Electrónico",
+            hintText: "Ingrese su correo electrónico registrado",
+            labelText: "Correo Electrónico Registrado",
             hintStyle: TextStyle(color: kBaseColor)),
         validator: (String value) {
           if (value.isEmpty) {
@@ -80,8 +79,16 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 return;
               } else {
                 _formKey.currentState.save();
-                await resetPassword(_emailController.text, context);
-                Navigator.of(context).popAndPushNamed('home');
+                bool reset =
+                    await resetPassword(_emailController.text, context);
+                print('reste result $reset');
+                if (reset) {
+                  showAlert(context, 'Se ha restablecido su contraseña',
+                      'Recibira un correo electrónico desde el cual poodra reestablecer la contraseña de su cuenta');
+                } else {
+                  showAlert(context, 'Corre electrónico no registrado',
+                      'El correo electrónico no ha sido registrado, verifique sus datos');
+                }
               }
             }));
 
@@ -138,13 +145,11 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Future<bool> resetPassword(String email, BuildContext context) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      ShowAlerts.ShowAlert(context, 'Se ha restablecido su contraseña',
-          'Recibira un correo electónico desde el cual poodra reestablecer la contraseña de su cuenta');
       return true;
     } on PlatformException catch (err) {
       print('error platform $err');
     } on FirebaseAuthException catch (e) {
-      ShowAlerts.ShowAlert(context, 'Error',
+      showAlert(context, 'Error',
           'Verifique que su correo y/o contraseña sean correctos');
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
@@ -157,5 +162,27 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       _emailController.clear();
       return false;
     }
+  }
+
+  void showAlert(BuildContext context, String title, String content) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            title: Text(title),
+            content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[Text(content)]),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () =>
+                      Navigator.of(context).popAndPushNamed('login'),
+                  child: Text('OK'))
+            ],
+          );
+        });
   }
 }

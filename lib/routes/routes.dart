@@ -2,6 +2,7 @@ import 'package:places_app/pages/afiliados/registro_afiliacion.dart';
 import 'package:places_app/pages/categories/index.dart';
 import 'package:places_app/pages/home_page.dart';
 import 'package:places_app/pages/login_page.dart';
+import 'package:places_app/pages/reset_password_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:places_app/pages/register_page.dart';
@@ -14,6 +15,7 @@ const register = "register";
 const tutorial = "tutorial";
 const categorias = "categorias";
 const registroAfilicacion = "registroAfiliacion";
+const resetPassword = "resetPassword";
 
 final routes = {
   home: (BuildContext context) => HomePage(),
@@ -22,4 +24,5 @@ final routes = {
   tutorial: (BuildContext context) => TutorialPage(),
   categorias: (BuildContext context) => CategoriesPage(),
   registroAfilicacion: (_) => RegistroAfiliacion(),
+  resetPassword: (BuildContext context) => ResetPasswordPage(),
 };
