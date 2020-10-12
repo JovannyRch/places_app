@@ -30,26 +30,31 @@ class _RegisterPageState extends State<RegisterPage> {
 
   void handleRegister() async {
     try {
-      UserCredential user = (await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
-              email: _emailController.text.toLowerCase(),
-              password: _passwordController.text));
-      print(user);
+      if (!_formKey.currentState.validate()) {
+        return;
+      } else {
+        _formKey.currentState.save();
+        UserCredential user = (await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+                email: _emailController.text.toLowerCase(),
+                password: _passwordController.text));
+        print(user);
 
-      if (user != null) {
-        if (isAfiliado) {
-          Usuario usuario = new Usuario(tipoUsuario: "afiliado");
-          usuario.save(_emailController.text);
-          preferences.email = _emailController.text.toLowerCase();
-          preferences.tipoUsuario = "afiliado";
-        } else {
-          Usuario usuario = new Usuario();
-          usuario.save(_emailController.text);
-          preferences.tipoUsuario = "normal";
+        if (user != null) {
+          if (isAfiliado) {
+            Usuario usuario = new Usuario(tipoUsuario: "afiliado");
+            usuario.save(_emailController.text);
+            preferences.email = _emailController.text.toLowerCase();
+            preferences.tipoUsuario = "afiliado";
+          } else {
+            Usuario usuario = new Usuario();
+            usuario.save(_emailController.text);
+            preferences.tipoUsuario = "normal";
+          }
+          await user.user.updateProfile(displayName: _nameController.text);
+          //
+          Navigator.pushReplacementNamed(context, home);
         }
-        await user.user.updateProfile(displayName: _nameController.text);
-        //
-        Navigator.pushReplacementNamed(context, home);
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -79,96 +84,180 @@ class _RegisterPageState extends State<RegisterPage> {
       height: mq.size.height / 8,
     );
     final nameField = TextFormField(
-      controller: _nameController,
-      keyboardType: TextInputType.name,
-      style: TextStyle(color: Colors.black),
-      cursorColor: Colors.black,
-      decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-            color: Colors.red,
-          )),
-          hintText: "Ingrese su nombre(s)",
-          labelText: "Nombre",
-          hintStyle: TextStyle(color: kBaseColor)),
-    );
+        controller: _nameController,
+        keyboardType: TextInputType.name,
+        style: TextStyle(color: Colors.black),
+        cursorColor: Colors.black,
+        decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+              color: Colors.red,
+            )),
+            hintText: "Ingrese su nombre(s)",
+            labelText: "Nombre",
+            hintStyle: TextStyle(color: kBaseColor)),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Ingrese su nombre(s)';
+          }
+
+          if (value.trim().length < 3) {
+            return 'Su nombre debe contener al menos 3 caracteres';
+          }
+
+          return null;
+        },
+        onSaved: (String value) {
+          _nameController.text = value;
+        });
 
     final apellidoPaternoField = TextFormField(
-      controller: _apellidoPaternoController,
-      keyboardType: TextInputType.name,
-      style: TextStyle(color: Colors.black),
-      cursorColor: Colors.black,
-      decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-            color: Colors.red,
-          )),
-          hintText: "Ingrese su apellido paterno",
-          labelText: "Apellido Paterno",
-          hintStyle: TextStyle(color: kBaseColor)),
-    );
+        controller: _apellidoPaternoController,
+        keyboardType: TextInputType.name,
+        style: TextStyle(color: Colors.black),
+        cursorColor: Colors.black,
+        decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+              color: Colors.red,
+            )),
+            hintText: "Ingrese su apellido paterno",
+            labelText: "Apellido Paterno",
+            hintStyle: TextStyle(color: kBaseColor)),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Ingrese su apellido paterno';
+          }
+
+          if (value.trim().length < 3) {
+            return 'Su apellido debe contener al menos 3 caracteres';
+          }
+
+          return null;
+        },
+        onSaved: (String value) {
+          _apellidoPaternoController.text = value;
+        });
 
     final apellidoMaternoField = TextFormField(
-      controller: _apellidoMaternoController,
-      keyboardType: TextInputType.name,
-      style: TextStyle(color: Colors.black),
-      cursorColor: Colors.black,
-      decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-            color: Colors.red,
-          )),
-          hintText: "Ingrese su apellido materno",
-          labelText: "Apellido Materno",
-          hintStyle: TextStyle(color: kBaseColor)),
-    );
+        controller: _apellidoMaternoController,
+        keyboardType: TextInputType.name,
+        style: TextStyle(color: Colors.black),
+        cursorColor: Colors.black,
+        decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+              color: Colors.red,
+            )),
+            hintText: "Ingrese su apellido materno",
+            labelText: "Apellido Materno",
+            hintStyle: TextStyle(color: kBaseColor)),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Ingrese su apellido materno';
+          }
+
+          if (value.trim().length < 3) {
+            return 'Su apellido debe contener al menos 3 caracteres';
+          }
+
+          return null;
+        },
+        onSaved: (String value) {
+          _apellidoMaternoController.text = value;
+        });
 
     final emailField = TextFormField(
-      controller: _emailController,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.black),
-      cursorColor: Colors.black,
-      decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-            color: Colors.red,
-          )),
-          hintText: "Ingrese su correo electrónico",
-          labelText: "Correo Electrónico",
-          hintStyle: TextStyle(color: kBaseColor)),
-    );
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
+        style: TextStyle(color: Colors.black),
+        cursorColor: Colors.black,
+        decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+              color: Colors.red,
+            )),
+            hintText: "Ingrese su correo electrónico",
+            labelText: "Correo Electrónico",
+            hintStyle: TextStyle(color: kBaseColor)),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Ingrese su correo electrónico';
+          }
+
+          if (!RegExp(
+                  r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+              .hasMatch(value)) {
+            return 'Ingrese un correo electrónico valido';
+          }
+
+          return null;
+        },
+        onSaved: (String value) {
+          _emailController.text = value;
+        });
 
     final passwordField = TextFormField(
-      controller: _passwordController,
-      keyboardType: TextInputType.visiblePassword,
-      obscureText: true,
-      style: TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.red,
+        controller: _passwordController,
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: true,
+        style: TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.red,
+              ),
             ),
-          ),
-          hintText: "Ingrese su contraseña",
-          labelText: "Contraseña",
-          hintStyle: TextStyle(color: kBaseColor)),
-    );
+            hintText: "Ingrese su contraseña",
+            labelText: "Contraseña",
+            hintStyle: TextStyle(color: kBaseColor)),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Ingrese su contraseña';
+          }
+
+          if (value.length < 6) {
+            return 'Su contraseña debe contener al menos 6 caracteres';
+          }
+
+          return null;
+        },
+        onSaved: (String value) {
+          _passwordController.text = value;
+        });
 
     final rePasswordField = TextFormField(
-      controller: _rePasswordController,
-      keyboardType: TextInputType.visiblePassword,
-      obscureText: true,
-      style: TextStyle(color: Colors.black),
-      decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(
-              color: Colors.red,
+        controller: _rePasswordController,
+        keyboardType: TextInputType.visiblePassword,
+        obscureText: true,
+        style: TextStyle(color: Colors.black),
+        decoration: InputDecoration(
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.red,
+              ),
             ),
-          ),
-          hintText: "Ingrese nuevamente su contraseña",
-          labelText: "Confirme su contraseña",
-          hintStyle: TextStyle(color: kBaseColor)),
-    );
+            hintText: "Ingrese nuevamente su contraseña",
+            labelText: "Confirme su contraseña",
+            hintStyle: TextStyle(color: kBaseColor)),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Ingrese nuevamente su contraseña';
+          }
+
+          if (value.length < 6) {
+            return 'Su contraseña debe contener al menos 6 caracteres';
+          }
+
+          if (value != _passwordController.text) {
+            return 'Las contraseñas no coinciden';
+          }
+
+          return null;
+        },
+        onSaved: (String value) {
+          _rePasswordController.text = value;
+        });
 
     final fields = Padding(
       padding: EdgeInsets.only(top: 10.0),
