@@ -11,7 +11,9 @@ import 'package:places_app/shared/user_preferences.dart';
 import '../const/const.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  String email;
+  String password;
+  LoginPage({this.email = "", this.password = ""});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -23,6 +25,26 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   UserPreferences preferences = new UserPreferences();
+
+  @override
+  void initState() {
+    if (widget.email.isNotEmpty && widget.password.isNotEmpty) {
+      //Call login
+      doLogin();
+    }
+    super.initState();
+  }
+
+  void doLogin() async {
+    UserCredential user =
+        await loginEmailPassword(widget.email, widget.password, context);
+    print(user);
+    if (user != null) {
+      preferences.email = _emailController.text;
+      //Check user type
+      Navigator.of(context).popAndPushNamed('home');
+    }
+  }
 
   void handleLogin() async {
     User user = await GoogleSignInService.signInWithGoogle();
