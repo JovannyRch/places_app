@@ -52,6 +52,9 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
   @override
   Widget build(BuildContext context) {
     appState = Provider.of<AppState>(context);
+    if (widget.categoria != null) {
+      afiliados = appState.afiliados;
+    }
     _size = MediaQuery.of(context).size;
     if (isLoading) {
       return Center(
@@ -64,7 +67,7 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
       );
     }
     return CarouselSlider(
-      items: appState.afiliados.map((a) {
+      items: afiliados.map((a) {
         return Builder(
           builder: (BuildContext context) {
             return _containerAfiliado(context, a);

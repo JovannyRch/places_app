@@ -118,6 +118,9 @@ class Afiliado {
       'puntos': newPuntos,
       'rating': prom
     };
+    this.total = newTotal;
+    this.puntos = newPuntos;
+    this.rating = prom;
     await api.updateDocument(data, id);
   }
 

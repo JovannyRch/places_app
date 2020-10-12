@@ -138,7 +138,67 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
         .showSnackBar(new SnackBar(content: new Text(value)));
   }
 
-  Widget _rating(double value) {
+  Widget _rating2(double value, int total) {
+    if (value == 0.0) {
+      return Container();
+    }
+
+    List<Widget> stars = [];
+    int total = value.toInt();
+
+    int halfs = 0;
+    double rest = value - total;
+
+    if (rest >= 0.24) {
+      if (rest >= .69)
+        total += 1;
+      else
+        halfs += 1;
+    }
+    for (int i = 0; i < total; ++i) {
+      stars.add(Icon(
+        Icons.star,
+        color: Colors.yellow.shade700,
+      ));
+    }
+
+    if (halfs == 1) {
+      stars.add(Icon(Icons.star_half, color: Colors.yellow.shade700));
+    }
+
+    return Container(
+      width: _size.width * 0.9,
+      margin: EdgeInsets.only(bottom: 10.0),
+      padding: EdgeInsets.only(left: 13.0),
+      child: Row(
+        children: <Widget>[
+          Text(
+            "$value",
+            style: TextStyle(
+              fontSize: 17.0,
+              color: Colors.grey,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          SizedBox(width: 5.0),
+          ...stars,
+          SizedBox(width: 5.0),
+          Text(
+            "($total)",
+            style: TextStyle(
+              fontSize: 17.0,
+              color: Colors.grey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _rating(
+    double value,
+  ) {
     List<Widget> stars = [];
     int total = value.toInt();
 
@@ -252,6 +312,11 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
         children: [
           Column(
             children: [
+              _rating2(widget.afiliado.rating, widget.afiliado.total),
+              _row(
+                Icon(Icons.store, color: kBaseColor),
+                widget.afiliado.nombre,
+              ),
               _row(
                 Icon(Icons.phone, color: kBaseColor),
                 widget.afiliado.telefono,
@@ -313,7 +378,7 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
             ),
           ),
           Text(
-            widget.afiliado.nombre,
+            widget.afiliado.categoria,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 27.0,
