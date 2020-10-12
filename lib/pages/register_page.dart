@@ -1,6 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:places_app/helpers/alerts_helper.dart';
+import 'package:places_app/models/usuario_model.dart';
+import 'package:places_app/pages/login_page.dart';
+import 'package:places_app/routes/routes.dart';
+import 'package:places_app/shared/user_preferences.dart';
 
 import '../const/const.dart';
 
@@ -21,26 +26,48 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _rePasswordController = TextEditingController();
   MediaQueryData mq;
   bool isAfiliado = false;
+  UserPreferences preferences = new UserPreferences();
 
-  Widget _linkAfiliado() {
-    return Container(
-      height: 30.0,
-      margin: EdgeInsets.only(top: 10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          GestureDetector(
-            child: Container(
-              width: mq.size.width * 0.3,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                border: Border.all(color: Colors.grey),
-              ),
-            ),
-          )
-        ],
-      ),
-    );
+  void handleRegister() async {
+    try {
+      UserCredential user = (await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: _emailController.text.toLowerCase(),
+              password: _passwordController.text));
+      print(user);
+
+      if (user != null) {
+        if (isAfiliado) {
+          Usuario usuario = new Usuario(
+              correo: _emailController.text, tipoUsuario: "afiliado");
+          usuario.save();
+          preferences.email = _emailController.text.toLowerCase();
+          preferences.tipoUsuario = "afiliado";
+        } else {
+          Usuario usuario = new Usuario(correo: _emailController.text);
+          usuario.save();
+          preferences.tipoUsuario = "normal";
+        }
+        await user.user.updateProfile(displayName: _nameController.text);
+        //
+        Navigator.pushReplacementNamed(context, home);
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        showAlert(context, "Contraseña débil", "Ingrese una contraseña segura");
+      } else if (e.code == 'email-already-in-use') {
+        showAlert(
+            context, "Correo no disponible", "El correo ya esta registrado");
+      }
+    } catch (e) {
+      print('error $e');
+      _emailController.clear();
+      _nameController.clear();
+      _apellidoMaternoController.clear();
+      _apellidoPaternoController.clear();
+      _passwordController.clear();
+      _rePasswordController.clear();
+    }
   }
 
   @override
@@ -166,40 +193,13 @@ class _RegisterPageState extends State<RegisterPage> {
         child: MaterialButton(
           minWidth: mq.size.width / 1.2,
           padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
-          child: Text("Registrarse",
+          child: Text(!isAfiliado ? "Registrarse" : "Continuar",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 20.0,
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
-          onPressed: () async {
-            try {
-              UserCredential user = (await FirebaseAuth.instance
-                  .createUserWithEmailAndPassword(
-                      email: _emailController.text,
-                      password: _passwordController.text));
-              print(user);
-
-              if (user != null) {
-                user.user.updateProfile(displayName: _nameController.text);
-                Navigator.of(context).popAndPushNamed('login');
-              }
-            } on FirebaseAuthException catch (e) {
-              if (e.code == 'weak-password') {
-                print('The password provided is too weak.');
-              } else if (e.code == 'email-already-in-use') {
-                print('The account already exists for that email.');
-              }
-            } catch (e) {
-              print('error $e');
-              _emailController.clear();
-              _nameController.clear();
-              _apellidoMaternoController.clear();
-              _apellidoPaternoController.clear();
-              _passwordController.clear();
-              _rePasswordController.clear();
-            }
-          },
+          onPressed: handleRegister,
         ));
 
     final bottom = Column(
@@ -265,14 +265,36 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 logo,
-                Text(
-                  "Registro de usuario",
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                !isAfiliado
+                    ? Text(
+                        "Registro de usuario",
+                        style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      )
+                    : Column(
+                        children: [
+                          Text(
+                            "Paso 1",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 15.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          SizedBox(height: 10.0),
+                          Text(
+                            "Registro de afiliado",
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
                 fields,
                 Padding(
                   padding: EdgeInsets.only(bottom: 50),
