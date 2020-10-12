@@ -19,17 +19,39 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _apellidoPaternoController = TextEditingController();
   TextEditingController _apellidoMaternoController = TextEditingController();
   TextEditingController _rePasswordController = TextEditingController();
+  MediaQueryData mq;
+  bool isAfiliado = false;
+
+  Widget _linkAfiliado() {
+    return Container(
+      height: 30.0,
+      margin: EdgeInsets.only(top: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          GestureDetector(
+            child: Container(
+              width: mq.size.width * 0.3,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                border: Border.all(color: Colors.grey),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final mq = MediaQuery.of(context);
+    mq = MediaQuery.of(context);
 
     bool isSubmitting = false;
-/* 
     final logo = Image.asset(
-      "assets/logo.png",
-      height: mq.size.height / 4,
-    ); */
+      "assets/images/logo.png",
+      height: mq.size.height / 8,
+    );
     final nameField = TextFormField(
       controller: _nameController,
       keyboardType: TextInputType.name,
@@ -214,7 +236,21 @@ class _RegisterPageState extends State<RegisterPage> {
               ),
             )
           ],
-        )
+        ),
+        MaterialButton(
+          onPressed: () {
+            setState(() {
+              isAfiliado = !isAfiliado;
+            });
+          },
+          child: Text(
+            !isAfiliado ? "Registrarse como afiliado" : "Registro normal",
+            style: Theme.of(context).textTheme.subtitle1.copyWith(
+                  color: kBaseColor,
+                  decoration: TextDecoration.underline,
+                ),
+          ),
+        ),
       ],
     );
 
@@ -228,7 +264,15 @@ class _RegisterPageState extends State<RegisterPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
-                //logo
+                logo,
+                Text(
+                  "Registro de usuario",
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 fields,
                 Padding(
                   padding: EdgeInsets.only(bottom: 50),
