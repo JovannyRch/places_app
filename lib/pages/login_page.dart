@@ -31,47 +31,65 @@ class _LoginPageState extends State<LoginPage> {
 
     final logo = Image.asset(
       "assets/images/logo.png",
-      height: mq.size.height / 3,
+      height: mq.size.height / 4,
     );
 
     final emailField = TextFormField(
-      controller: _emailController,
-      keyboardType: TextInputType.emailAddress,
-      style: TextStyle(color: Colors.black),
-      cursorColor: Colors.black,
-      decoration: InputDecoration(
-          focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-            color: Colors.red,
-          )),
-          hintText: "Ingrese su correo electrónico",
-          labelText: "Correo Electrónico",
-          hintStyle: TextStyle(color: kBaseColor)),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Ingrese su correo electrónico';
-        }
-      },
-      onSaved: (String value) {},
-    );
-
-    final passwordField = Column(children: <Widget>[
-      TextFormField(
-        controller: _passwordController,
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: true,
+        controller: _emailController,
+        keyboardType: TextInputType.emailAddress,
         style: TextStyle(color: Colors.black),
         cursorColor: Colors.black,
         decoration: InputDecoration(
             focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: Colors.red,
-              ),
-            ),
-            hintText: "Ingrese su contraseña",
-            labelText: "Contraseña",
+                borderSide: BorderSide(
+              color: Colors.red,
+            )),
+            hintText: "Ingrese su correo electrónico",
+            labelText: "Correo Electrónico",
             hintStyle: TextStyle(color: kBaseColor)),
-      ),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Ingrese su correo electrónico';
+          }
+
+          if (!RegExp(
+                  r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+              .hasMatch(value)) {
+            return 'Ingrese un correo electrónico valido';
+          }
+
+          return null;
+        },
+        onSaved: (String value) {
+          _emailController.text = value;
+        });
+
+    final passwordField = Column(children: <Widget>[
+      TextFormField(
+          controller: _passwordController,
+          keyboardType: TextInputType.visiblePassword,
+          obscureText: true,
+          style: TextStyle(color: Colors.black),
+          cursorColor: Colors.black,
+          decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Colors.red,
+                ),
+              ),
+              hintText: "Ingrese su contraseña",
+              labelText: "Contraseña",
+              hintStyle: TextStyle(color: kBaseColor)),
+          validator: (String value) {
+            if (value.isEmpty) {
+              return 'Ingrese su contraseña';
+            }
+
+            return null;
+          },
+          onSaved: (String value) {
+            _passwordController.text = value;
+          }),
       Padding(padding: EdgeInsets.all(2.0)),
       Row(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -101,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
         color: kBaseColor,
         child: MaterialButton(
           minWidth: mq.size.width / 1.2,
-          padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
+          padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
           child: Text("Iniciar Sesión",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -109,13 +127,18 @@ class _LoginPageState extends State<LoginPage> {
                   color: Colors.white,
                   fontWeight: FontWeight.bold)),
           onPressed: () async {
-            UserCredential user = await loginEmailPassword(
-                _emailController.text, _passwordController.text, context);
-            print(user);
-            if (user != null) {
-              preferences.email = _emailController.text;
-              //TODO: Check user type
-              Navigator.of(context).popAndPushNamed('home');
+            if (!_formKey.currentState.validate()) {
+              return;
+            } else {
+              _formKey.currentState.save();
+              UserCredential user = await loginEmailPassword(
+                  _emailController.text, _passwordController.text, context);
+              print(user);
+              if (user != null) {
+                preferences.email = _emailController.text;
+                //TODO: Check user type
+                Navigator.of(context).popAndPushNamed('home');
+              }
             }
           },
         ));
