@@ -98,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
     final logo = Image.asset(
       "assets/images/logo.png",
-      height: mq.size.height / 8,
+      height: isAfiliado ? (mq.size.height / 16) : (mq.size.height / 8),
     );
     final nameField = TextFormField(
         controller: _nameController,

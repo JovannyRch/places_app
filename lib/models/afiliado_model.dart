@@ -110,7 +110,7 @@ class Afiliado {
   Future<void> addRating(int rating) async {
     final newTotal = (this.total ?? 0) + 1;
     final newPuntos = (this.puntos ?? 0) + rating;
-    final prom = this.total > 0
+    final prom = newTotal > 0
         ? double.parse((newPuntos / newTotal).toStringAsFixed(2))
         : 0.0;
     final Map<String, dynamic> data = {

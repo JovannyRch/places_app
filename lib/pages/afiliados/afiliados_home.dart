@@ -70,8 +70,9 @@ class _AfiliadosHomeState extends State<AfiliadosHome> {
     }
 
     return SafeArea(
-        child: Container(
-            padding: EdgeInsets.only(top: 50.0, right: 20.0, left: 20.0),
-            child: body));
+      child: Container(
+          padding: EdgeInsets.only(top: 50.0, right: 20.0, left: 20.0),
+          child: body),
+    );
   }
 }

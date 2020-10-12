@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _publicidad() {
     return Container(
-      height: _size.height * 0.25,
+      height: _size.height < 100 ? _size.height * 0.25 : 250.0,
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {
           return new Image.network(

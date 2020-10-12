@@ -25,7 +25,7 @@ class NoticiasSlider extends StatelessWidget {
         );
       }).toList(),
       options: CarouselOptions(
-        height: _size.height * 0.15,
+        height: 150.0,
         aspectRatio: 16 / 9,
         viewportFraction: 0.8,
         initialPage: 0,
@@ -43,7 +43,6 @@ class NoticiasSlider extends StatelessWidget {
 
   Widget _containerNoticia(Noticia n) {
     return Container(
-      height: _size.height * 0.25,
       width: _size.width * 0.9,
       padding: EdgeInsets.symmetric(
         vertical: 10.0,

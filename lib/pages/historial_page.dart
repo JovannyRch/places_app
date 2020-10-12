@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:places_app/components/custom_header.dart';
-import 'package:places_app/data/Data.dart';
+
 import 'package:places_app/models/rate_model.dart';
-import 'package:places_app/models/review_model.dart';
+
 import 'package:places_app/storage/App.dart';
 import 'package:provider/provider.dart';
 
@@ -79,8 +79,9 @@ class _HistorialPageState extends State<HistorialPage> {
 
   Widget _reviewContainer(Rating r) {
     return Container(
-      width: _size.width * 0.9,
-      height: _size.height * 0.15,
+      width: _size.width,
+      padding: EdgeInsets.symmetric(horizontal: 7.0),
+      height: 130.0,
       child: Column(
         children: [
           _reviewTitle(r),
@@ -96,13 +97,14 @@ class _HistorialPageState extends State<HistorialPage> {
       children: [
         Container(
           child: _iconPlace(r.imgNegocio),
-          width: 60.0,
+          width: 40.0,
         ),
         SizedBox(
-          width: 15.0,
+          width: 10.0,
         ),
         Container(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _title(r.nombreAfiliacion),
               _subtitle(r.ubicacion ?? ""),
@@ -119,7 +121,7 @@ class _HistorialPageState extends State<HistorialPage> {
   Widget _subtitle(String text) {
     if (text.isEmpty) return Container();
     return Container(
-      width: _size.width * 0.7,
+      width: _size.width * 0.5,
       child: Text(
         text,
         style: TextStyle(
@@ -133,7 +135,6 @@ class _HistorialPageState extends State<HistorialPage> {
   Widget _title(String text) {
     return Container(
       margin: EdgeInsets.only(bottom: 5.0),
-      width: _size.width * 0.7,
       child: Text(
         text,
         style: TextStyle(

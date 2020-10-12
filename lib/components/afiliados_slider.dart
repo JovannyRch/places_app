@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
-import 'package:places_app/data/Data.dart';
 import 'package:places_app/models/afiliado_model.dart';
 import 'package:places_app/models/categoria_model.dart';
 import 'package:places_app/pages/afilidados_detail.dart';
 import 'package:places_app/services/afiliados_service.dart';
-import 'package:places_app/services/db_service.dart';
+
 import 'package:places_app/storage/App.dart';
 import 'package:provider/provider.dart';
 
@@ -107,7 +106,7 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
         child: Column(
           children: [
             Container(
-              height: _size.height * 0.18,
+              height: 150.0,
               width: _size.width * 0.8,
               child: FadeInImage.assetNetwork(
                 placeholder: 'assets/images/loader.gif',
