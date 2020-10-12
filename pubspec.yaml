@@ -40,7 +40,6 @@ dependencies:
   firebase_database: ^4.1.1
   image_picker: ^0.6.7+11
   mime_type: ^0.3.2
-  compressimage: ^0.1.1
   dotted_border: ^1.0.6
   smart_select: ^4.2.1
   cool_alert: ^1.0.1
@@ -49,6 +48,7 @@ dependencies:
   connectivity: ^0.4.9+3
   mapbox_gl: ^0.8.0
   location: ^3.0.2
+  flutter_native_image: ^0.0.5+2
   
 dev_dependencies:
   flutter_test:

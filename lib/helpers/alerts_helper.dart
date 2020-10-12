@@ -4,7 +4,12 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 
-void success(BuildContext context, String title, String message, {Function f}) {
+void success(
+  BuildContext context,
+  String title,
+  String message, {
+  Function f = null,
+}) {
   CoolAlert.show(
     context: context,
     type: CoolAlertType.success,

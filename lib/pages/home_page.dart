@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:places_app/components/afiliados_slider.dart';
 import 'package:places_app/components/noticias_slider.dart';
-import 'package:places_app/const/const.dart';
+
 import 'package:places_app/menu.dart';
 import 'package:places_app/shared/user_preferences.dart';
 import 'package:places_app/storage/App.dart';
@@ -49,9 +49,15 @@ class _HomePageState extends State<HomePage> {
         Positioned(
           left: 10,
           top: 25,
-          child: IconButton(
-            icon: Icon(Icons.menu),
-            onPressed: () => scaffoldKey.currentState.openDrawer(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(200.0),
+            ),
+            child: IconButton(
+              icon: Icon(Icons.menu),
+              onPressed: () => scaffoldKey.currentState.openDrawer(),
+            ),
           ),
         ),
       ],

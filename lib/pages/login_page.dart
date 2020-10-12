@@ -51,6 +51,7 @@ class _LoginPageState extends State<LoginPage> {
     setSubmitting(false);
     if (user != null || userCredential != null) {
       preferences.email = _emailController.text;
+      preferences.tipoUsuario = "normal";
       Navigator.of(context).popAndPushNamed(home);
     }
   }

@@ -117,7 +117,7 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
                 TextFormField(
                   controller: nombreCtrl,
                   decoration: InputDecoration(
-                    labelText: 'Razon social',
+                    labelText: 'Razón social',
                   ),
                 ),
                 TextFormField(
@@ -260,38 +260,45 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
 
   void handleRegister() async {
     //TODO: Register
-    setIsSaving(true);
-    if (categoriaValue == '') {
-      //Show Message
-      return;
+    try {
+      setIsSaving(true);
+      if (categoriaValue == '') {
+        //Show Message
+        return;
+      }
+
+      String urlImg = await subirImagen(fotoFile);
+      List<String> urls = [];
+      List<Future<String>> fs = fotos.map((e) => subirImagen(e)).toList();
+      urls = await Future.wait(fs);
+
+      Afiliado afiliado = new Afiliado(
+        id: "",
+        nombre: nombreCtrl.text,
+        categoria: categoriaValue,
+        telefono: telefonoCtrl.text,
+        latitud: 0.0,
+        longitud: 0.0,
+        rfc: rfcCtrl.text,
+        img: urlImg,
+        fotos: urls,
+        user: preferences.email,
+        ubicacion: ubicacionCtrl.text,
+        aprobado: false,
+      );
+      db.crearAfiliado(afiliado);
+      alerts.success(context, "Registro exitoso",
+          "Su registro será revisado para su aprobación.", f: () {
+        Navigator.pushReplacementNamed(context, home);
+      });
+
+      setIsSaving(false);
+    } catch (e) {
+      print(e.toString());
+      alerts.error(
+          context, "Error", "Ocurrió un error al registrar la afiliación");
+      setIsSaving(false);
     }
-
-    String urlImg = await subirImagen(fotoFile);
-    List<String> urls = [];
-    List<Future<String>> fs = fotos.map((e) => subirImagen(e)).toList();
-    urls = await Future.wait(fs);
-
-    Afiliado afiliado = new Afiliado(
-      id: "",
-      nombre: nombreCtrl.text,
-      categoria: categoriaValue,
-      telefono: telefonoCtrl.text,
-      latitud: 0.0,
-      longitud: 0.0,
-      rfc: rfcCtrl.text,
-      img: urlImg,
-      fotos: urls,
-      user: preferences.email,
-      ubicacion: ubicacionCtrl.text,
-      aprobado: false,
-    );
-    db.crearAfiliado(afiliado);
-    alerts.success(context, "Registro exitoso",
-        "Su registro será revisado para su aprobación.", f: () {
-      Navigator.pushReplacementNamed(context, home);
-    });
-
-    setIsSaving(false);
   }
 
   void setLoading(bool val) {

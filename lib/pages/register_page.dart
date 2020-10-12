@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:places_app/components/blur_container.dart';
 import 'package:places_app/helpers/alerts_helper.dart';
 import 'package:places_app/models/usuario_model.dart';
-import 'package:places_app/pages/login_page.dart';
+
 import 'package:places_app/routes/routes.dart';
 import 'package:places_app/shared/user_preferences.dart';
 
@@ -46,9 +46,10 @@ class _RegisterPageState extends State<RegisterPage> {
             .createUserWithEmailAndPassword(
                 email: _emailController.text.toLowerCase(),
                 password: _passwordController.text));
-        print(user);
+        print(user.user.email);
 
         if (user != null) {
+          print("El usuario fue registrado correctamente");
           if (isAfiliado) {
             Usuario usuario = new Usuario(tipoUsuario: "afiliado");
             await usuario.save(_emailController.text);
@@ -61,11 +62,13 @@ class _RegisterPageState extends State<RegisterPage> {
             preferences.tipoUsuario = "normal";
           }
           await user.user.updateProfile(displayName: _nameController.text);
-          //
+          success(context, "Cuenta creada", "Su registro ha sido exitoso",
+              f: () {
+            Navigator.pushReplacementNamed(context, home);
+          });
           setState(() {
             isSubmitting = false;
           });
-          Navigator.pushReplacementNamed(context, home);
         }
       }
     } on FirebaseAuthException catch (e) {
@@ -83,12 +86,12 @@ class _RegisterPageState extends State<RegisterPage> {
         isSubmitting = false;
       });
       print('error $e');
-      _emailController.clear();
+      /*  _emailController.clear();
       _nameController.clear();
       _apellidoMaternoController.clear();
       _apellidoPaternoController.clear();
       _passwordController.clear();
-      _rePasswordController.clear();
+      _rePasswordController.clear(); */
     }
   }
 
@@ -298,12 +301,12 @@ class _RegisterPageState extends State<RegisterPage> {
       child: MaterialButton(
         minWidth: mq.size.width / 1.2,
         padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
-        child: Text(!isAfiliado ? "Registrarse" : "Continuar",
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 20.0,
-                color: Colors.white,
-                fontWeight: FontWeight.bold)),
+        child: Text(
+          !isAfiliado ? "Registrarse" : "Continuar",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         onPressed: handleRegister,
       ),
     );

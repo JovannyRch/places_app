@@ -29,7 +29,7 @@ class Api {
     return ref.add(data);
   }
 
-  Future<DocumentReference> addDocumentWithId(String id, Map data) {
+  Future<void> addDocumentWithId(String id, Map data) {
     return ref.doc(id).set(data);
   }
 

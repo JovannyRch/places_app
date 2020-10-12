@@ -9,6 +9,7 @@ import 'package:places_app/models/rate_model.dart';
 import 'package:places_app/shared/user_preferences.dart';
 import 'package:places_app/storage/App.dart';
 import 'package:provider/provider.dart';
+import 'package:places_app/helpers/alerts_helper.dart';
 
 class AfiliadosDetailsPage extends StatefulWidget {
   Afiliado afiliado;
@@ -129,7 +130,8 @@ class _AfiliadosDetailsPageState extends State<AfiliadosDetailsPage> {
     appState.updateAfiliados();
     Afiliado a = await Afiliado.getById(widget.afiliado.id);
     await a.addRating(calificacion);
-    showInSnackBar("Calificación guardada");
+    success(context, "Calificación guardada",
+        "su calificacion ha sido guardada correctamente");
     setCalificando(false);
   }
 
