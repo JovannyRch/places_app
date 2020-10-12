@@ -260,7 +260,7 @@ class _RegisterPageState extends State<RegisterPage> {
         });
 
     final fields = Padding(
-      padding: EdgeInsets.only(top: 10.0),
+      padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
@@ -295,9 +295,9 @@ class _RegisterPageState extends State<RegisterPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         registerButton,
-        Padding(
-          padding: EdgeInsets.all(8.0),
-        ),
+        /*  Padding(
+          padding: EdgeInsets.only(8.0),
+        ), */
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -308,6 +308,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   .subtitle1
                   .copyWith(color: Colors.black),
             ),
+            /* Padding(padding: EdgeInsets.only(bottom: 10.0)) */
           ],
         ),
         Row(
@@ -322,23 +323,25 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: Theme.of(context).textTheme.subtitle1.copyWith(
                     color: kBaseColor, decoration: TextDecoration.underline),
               ),
-            )
+            ),
           ],
         ),
-        MaterialButton(
-          onPressed: () {
-            setState(() {
-              isAfiliado = !isAfiliado;
-            });
-          },
-          child: Text(
-            !isAfiliado ? "Registrarse como afiliado" : "Registro normal",
-            style: Theme.of(context).textTheme.subtitle1.copyWith(
-                  color: kBaseColor,
-                  decoration: TextDecoration.underline,
-                ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+          MaterialButton(
+            onPressed: () {
+              setState(() {
+                isAfiliado = !isAfiliado;
+              });
+            },
+            child: Text(
+              !isAfiliado ? "Registrarse como afiliado" : "Registro normal",
+              style: Theme.of(context).textTheme.subtitle1.copyWith(
+                    color: kBaseColor,
+                    decoration: TextDecoration.underline,
+                  ),
+            ),
           ),
-        ),
+        ])
       ],
     );
 
@@ -346,7 +349,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
-          padding: EdgeInsets.all(36),
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 36.0),
           child: Container(
             height: mq.size.height,
             child: Column(
@@ -385,7 +388,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                 fields,
                 Padding(
-                  padding: EdgeInsets.only(bottom: 50),
+                  padding: EdgeInsets.only(bottom: 10.0),
                   child: bottom,
                 ),
               ],
