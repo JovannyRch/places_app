@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:places_app/helpers/alerts_helper.dart';
 import 'package:places_app/models/usuario_model.dart';
@@ -38,14 +38,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
       if (user != null) {
         if (isAfiliado) {
-          Usuario usuario = new Usuario(
-              correo: _emailController.text, tipoUsuario: "afiliado");
-          usuario.save();
+          Usuario usuario = new Usuario(tipoUsuario: "afiliado");
+          usuario.save(_emailController.text);
           preferences.email = _emailController.text.toLowerCase();
           preferences.tipoUsuario = "afiliado";
         } else {
-          Usuario usuario = new Usuario(correo: _emailController.text);
-          usuario.save();
+          Usuario usuario = new Usuario();
+          usuario.save(_emailController.text);
           preferences.tipoUsuario = "normal";
         }
         await user.user.updateProfile(displayName: _nameController.text);

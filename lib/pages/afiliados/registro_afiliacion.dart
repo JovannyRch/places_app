@@ -61,6 +61,7 @@ class _RegistroAfiliacionState extends State<RegistroAfiliacion> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: "register",
         backgroundColor: kBaseColor,
         onPressed: handleRegister,
         label: Text("Terminar registro"),

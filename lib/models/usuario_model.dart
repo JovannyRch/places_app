@@ -16,7 +16,6 @@ class Usuario {
   Usuario({
     this.id = "",
     this.tipoUsuario = "normal",
-    this.correo,
   });
 
   Api api = new Api('usuarios');
@@ -28,22 +27,19 @@ class Usuario {
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
         id: json["id"],
         tipoUsuario: json["tipoUsuario"],
-        correo: json["correo"],
       );
 
   factory Usuario.fromMap(Map<String, dynamic> json, String id) => Usuario(
         id: id,
         tipoUsuario: json["tipoUsuario"],
-        correo: json["correo"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "tipoUsuario": tipoUsuario,
-        "correo": correo,
       };
 
-  Future save() async {
-    await api.addDocument(this.toJson());
+  Future save(String id) async {
+    await api.addDocumentWithId(id, this.toJson());
   }
 }

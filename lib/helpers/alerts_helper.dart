@@ -13,6 +13,15 @@ void success(BuildContext context, String title, String message) {
   );
 }
 
+void error(BuildContext context, String title, String message) {
+  CoolAlert.show(
+    context: context,
+    type: CoolAlertType.error,
+    title: title,
+    text: message,
+  );
+}
+
 showAlert(BuildContext context, String title, String subtitle) {
   if (Platform.isAndroid) {
     return showDialog(

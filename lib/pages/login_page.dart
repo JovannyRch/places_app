@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:places_app/helpers/alerts_helper.dart';
 import 'package:places_app/services/alerts_service.dart';
 import 'package:places_app/services/facebook_signin_service.dart';
 import 'package:places_app/services/google_signin_service.dart';
@@ -36,9 +37,17 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void doLogin() async {
+    UserCredential user = await signIn(widget.email, widget.password);
+    if (user != null) {
+      preferences.email = _emailController.text;
+      //Check user type
+      Navigator.of(context).popAndPushNamed('home');
+    }
+  }
+
+  void handleLoginEmailPassword() async {
     UserCredential user =
-        await loginEmailPassword(widget.email, widget.password, context);
-    print(user);
+        await signIn(_emailController.text, _passwordController.text);
     if (user != null) {
       preferences.email = _emailController.text;
       //Check user type
@@ -47,6 +56,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void handleLogin() async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
     User user = await GoogleSignInService.signInWithGoogle();
     if (user != null) {
       preferences.email = _emailController.text;
@@ -162,19 +175,24 @@ class _LoginPageState extends State<LoginPage> {
               return;
             } else {
               _formKey.currentState.save();
-              UserCredential user = await loginEmailPassword(
-                  _emailController.text, _passwordController.text, context);
-              print(user);
-              if (user != null) {
-                preferences.email = _emailController.text;
-                //TODO: Check user type
-                Navigator.of(context).popAndPushNamed('home');
+              try {
+                UserCredential user = await loginEmailPassword(
+                    _emailController.text, _passwordController.text, context);
+
+                if (user != null) {
+                  preferences.email = _emailController.text;
+                  Navigator.of(context).popAndPushNamed('home');
+                }
+              } catch (e) {
+                error(context, "Error",
+                    "Verifique que sus credenciales sean correctas");
               }
             }
           },
         ));
 
     final facebookLoginButton = FloatingActionButton(
+      heroTag: "google",
       backgroundColor: kBaseColor,
       child: Icon(FontAwesomeIcons.facebook, color: Colors.white),
       onPressed: () async {
@@ -187,6 +205,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final googleLoginButton = FloatingActionButton(
+      heroTag: "fb",
       backgroundColor: kBaseColor,
       child: Icon(FontAwesomeIcons.google, color: Colors.white),
       onPressed: handleLogin,
@@ -258,18 +277,52 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Future<UserCredential> signIn(String email, String password) async {
+    UserCredential result;
+    String errorMessage;
+
+    try {
+      result = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+    } catch (error) {
+      switch (error.code) {
+        case "ERROR_INVALID_EMAIL":
+          errorMessage = "Your email address appears to be malformed.";
+          break;
+        case "ERROR_WRONG_PASSWORD":
+          errorMessage = "Your password is wrong.";
+          break;
+        case "ERROR_USER_NOT_FOUND":
+          errorMessage = "User with this email doesn't exist.";
+          break;
+        case "ERROR_USER_DISABLED":
+          errorMessage = "User with this email has been disabled.";
+          break;
+        case "ERROR_TOO_MANY_REQUESTS":
+          errorMessage = "Too many requests. Try again later.";
+          break;
+        case "ERROR_OPERATION_NOT_ALLOWED":
+          errorMessage = "Signing in with Email and Password is not enabled.";
+          break;
+        default:
+          errorMessage = "An undefined Error happened.";
+      }
+      return null;
+    }
+
+    if (errorMessage != null) {
+      return Future.error(errorMessage);
+    }
+
+    return result;
+  }
+
   Future<UserCredential> loginEmailPassword(
       String email, String password, BuildContext context) async {
     try {
       UserCredential user = (await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) {
-        print(value);
-      }).catchError((onError) {
-        print(onError);
-      }));
+          .signInWithEmailAndPassword(email: email, password: password));
       print(user);
-
       return user;
     } on PlatformException catch (err) {
       print('error platform $err');
