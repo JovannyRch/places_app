@@ -42,10 +42,15 @@ class _RegisterPageState extends State<RegisterPage> {
         return;
       } else {
         _formKey.currentState.save();
-        UserCredential user = (await FirebaseAuth.instance
+        UserCredential user = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
                 email: _emailController.text.toLowerCase(),
-                password: _passwordController.text));
+                password: _passwordController.text)
+            .catchError((onError) {
+          print('ERRRRRRROOOOOOOOR');
+          print(onError);
+          showAlert(context, 'Algo salio mal...', onError.toString());
+        });
         print(user.user.email);
 
         if (user != null) {
@@ -70,16 +75,6 @@ class _RegisterPageState extends State<RegisterPage> {
             isSubmitting = false;
           });
         }
-      }
-    } on FirebaseAuthException catch (e) {
-      setState(() {
-        isSubmitting = false;
-      });
-      if (e.code == 'weak-password') {
-        showAlert(context, "Contraseña débil", "Ingrese una contraseña segura");
-      } else if (e.code == 'email-already-in-use') {
-        showAlert(
-            context, "Correo no disponible", "El correo ya esta registrado");
       }
     } catch (e) {
       setState(() {
@@ -335,7 +330,8 @@ class _RegisterPageState extends State<RegisterPage> {
           children: <Widget>[
             MaterialButton(
               onPressed: () {
-                Navigator.of(context).popAndPushNamed('login');
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('login', (route) => false);
               },
               child: Text(
                 "Iniciar Sesión",
@@ -419,5 +415,39 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  void showAlert(BuildContext context, String title, String error) {
+    var messageError;
+
+    switch (error) {
+      case '[firebase_auth/email-already-in-use] The email address is already in use by another account.':
+        messageError =
+            'El correo electrónico ya se encuentra vinculado a una cuenta registrada, por favor inicie sesión';
+        break;
+      default:
+        messageError = 'Verifique su correo y contraseña';
+    }
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0)),
+            title: Text(title),
+            content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[Text(messageError)]),
+            actions: <Widget>[
+              FlatButton(
+                  onPressed: () => Navigator.of(context)
+                      .pushNamedAndRemoveUntil('register', (route) => false),
+                  child: Text('OK',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, color: kBaseColor)))
+            ],
+          );
+        });
   }
 }
