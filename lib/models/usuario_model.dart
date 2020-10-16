@@ -13,29 +13,60 @@ String usuarioToJson(List<Usuario> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Usuario {
-  Usuario({
-    this.id = "",
-    this.tipoUsuario = "normal",
-  });
+  Usuario(
+      {this.id = "",
+      this.tipoUsuario = "normal",
+      this.correo = "",
+      this.apellidoMaterno = "",
+      this.apellidoPaterno = "",
+      this.nombre = "",
+      this.placa = "",
+      this.seguro = "",
+      this.licencia = ""});
 
   Api api = new Api('usuarios');
 
   String id;
   String tipoUsuario;
   String correo;
+  String apellidoPaterno;
+  String apellidoMaterno;
+  String nombre;
+  String placa;
+  String seguro;
+  String licencia;
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
-        id: json["id"],
-        tipoUsuario: json["tipoUsuario"],
-      );
+      id: json["id"],
+      tipoUsuario: json["tipoUsuario"],
+      correo: json["correo"],
+      apellidoMaterno: json["apellidoMaterno"],
+      apellidoPaterno: json["apellidoPaterno"],
+      licencia: json["licencia"],
+      nombre: json["nombre"],
+      placa: json["placa"],
+      seguro: json["seguro"]);
 
   factory Usuario.fromMap(Map<String, dynamic> json, String id) => Usuario(
-        id: id,
-        tipoUsuario: json["tipoUsuario"],
-      );
+      id: id,
+      tipoUsuario: json["tipoUsuario"],
+      correo: json["correo"],
+      apellidoMaterno: json["apellidoMaterno"],
+      apellidoPaterno: json["apellidoPaterno"],
+      licencia: json["licencia"],
+      nombre: json["nombre"],
+      placa: json["placa"],
+      seguro: json["seguro"]);
 
   Map<String, dynamic> toJson() => {
         "tipoUsuario": tipoUsuario,
+        "correo": correo,
+        "apellidoMaterno": apellidoMaterno,
+        "apellidoPaterno": apellidoPaterno,
+        "licencia": licencia,
+        "nombre": nombre,
+        "placa": placa,
+        "seguro": seguro
       };
 
   Future save(String id) async {

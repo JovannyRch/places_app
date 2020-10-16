@@ -17,4 +17,14 @@ class UserService {
     }
     return null;
   }
+
+  Future<Usuario> getUsuario(String email) async {
+    final resp = await api.getDocumentById(email);
+    if (resp.exists) {
+      print('respuestAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+      print(resp);
+      return resp.data().[];
+    }
+    return null;
+  }
 }

@@ -56,15 +56,33 @@ class _RegisterPageState extends State<RegisterPage> {
         if (user != null) {
           print("El usuario fue registrado correctamente");
           if (isAfiliado) {
-            Usuario usuario = new Usuario(tipoUsuario: "afiliado");
+            Usuario usuario = new Usuario(
+                tipoUsuario: "afiliado",
+                apellidoMaterno: _apellidoMaternoController.text,
+                apellidoPaterno: _apellidoPaternoController.text,
+                correo: _emailController.text,
+                licencia: "",
+                nombre: _nameController.text,
+                placa: "",
+                seguro: "");
             await usuario.save(_emailController.text);
             preferences.email = _emailController.text.toLowerCase();
             preferences.tipoUsuario = "afiliado";
           } else {
-            Usuario usuario = new Usuario();
+            Usuario usuario = new Usuario(
+                tipoUsuario: "normal",
+                apellidoMaterno: _apellidoMaternoController.text,
+                apellidoPaterno: _apellidoPaternoController.text,
+                correo: _emailController.text,
+                licencia: "",
+                nombre: _nameController.text,
+                placa: "",
+                seguro: "");
             await usuario.save(_emailController.text);
             preferences.email = _emailController.text.toLowerCase();
             preferences.tipoUsuario = "normal";
+            Navigator.pushReplacementNamed(context, registerExtra,
+                arguments: _emailController.text);
           }
           await user.user.updateProfile(displayName: _nameController.text);
           success(context, "Cuenta creada", "Su registro ha sido exitoso",
