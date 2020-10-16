@@ -30,7 +30,7 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
   bool isSubmitting = false;
 
   String emailArg = null;
-  Usuario usuarioArg = Usuario();
+  UserService userService = UserService();
 
   void handleRegister() async {
     try {
@@ -47,12 +47,17 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
         _formKey.currentState.save();
 
         Usuario user;
+        bool bandera = false;
 
         if (emailArg != null) {
-          user = await usuarioArg.fetchData(emailArg);
+          user = await userService.getUsuario(emailArg);
+          user.licencia = _licenciaController.text;
+          user.seguro = _seguroController.text;
+          user.placa = _placaController.text;
+          bandera = await userService.updateUser(user, user.id);
         }
 
-        if (user != null) {
+        if (bandera) {
           success(context, "Cuenta creada", "Su registro ha sido exitoso",
               f: () {
             Navigator.pushReplacementNamed(context, home);
@@ -74,6 +79,8 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
   Widget build(BuildContext context) {
     mq = MediaQuery.of(context);
     emailArg = ModalRoute.of(context).settings.arguments;
+    DateTime _dateLicencia;
+    DateTime _dateSeguro;
 
     final logo = Image.asset(
       "assets/images/logo.png",
@@ -82,7 +89,7 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
 
     final placaField = TextFormField(
         controller: _placaController,
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.text,
         style: TextStyle(color: Colors.black),
         cursorColor: Colors.black,
         decoration: InputDecoration(
@@ -90,16 +97,16 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
                 borderSide: BorderSide(
               color: Colors.red,
             )),
-            hintText: "Ingrese su numero de placas",
-            labelText: "Nombre",
+            hintText: "Ingrese tu placa",
+            labelText: "Placa",
             hintStyle: TextStyle(color: kBaseColor)),
         validator: (String value) {
           if (value.isEmpty) {
-            return 'Ingrese su nombre(s)';
+            return 'Ingrese su placa';
           }
 
-          if (value.trim().length < 3) {
-            return 'Su nombre debe contener al menos 3 caracteres';
+          if (value.trim().length < 9 || value.trim().length > 9) {
+            return 'Su placa debe contener 9 caracteres';
           }
 
           return null;
@@ -110,7 +117,8 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
 
     final licenciaField = TextFormField(
         controller: _licenciaController,
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.datetime,
+        enabled: false,
         style: TextStyle(color: Colors.black),
         cursorColor: Colors.black,
         decoration: InputDecoration(
@@ -118,16 +126,12 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
                 borderSide: BorderSide(
               color: Colors.red,
             )),
-            hintText: "Ingrese su nombre(s)",
-            labelText: "Nombre",
+            hintText: "Introduce la vigencia de tu licencia",
+            labelText: "Licencia",
             hintStyle: TextStyle(color: kBaseColor)),
         validator: (String value) {
           if (value.isEmpty) {
-            return 'Ingrese su nombre(s)';
-          }
-
-          if (value.trim().length < 3) {
-            return 'Su nombre debe contener al menos 3 caracteres';
+            return 'Ingrese la vigencia de su licencia';
           }
 
           return null;
@@ -138,7 +142,8 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
 
     final seguroField = TextFormField(
         controller: _seguroController,
-        keyboardType: TextInputType.name,
+        keyboardType: TextInputType.datetime,
+        enabled: false,
         style: TextStyle(color: Colors.black),
         cursorColor: Colors.black,
         decoration: InputDecoration(
@@ -146,16 +151,12 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
                 borderSide: BorderSide(
               color: Colors.red,
             )),
-            hintText: "Ingrese su nombre(s)",
-            labelText: "Nombre",
+            hintText: "Ingrese la vigencia de su póliza de seguro",
+            labelText: "Póliza de seguro",
             hintStyle: TextStyle(color: kBaseColor)),
         validator: (String value) {
           if (value.isEmpty) {
-            return 'Ingrese su nombre(s)';
-          }
-
-          if (value.trim().length < 3) {
-            return 'Su nombre debe contener al menos 3 caracteres';
+            return 'Ingrese la vigencia de su póliza de seguro';
           }
 
           return null;
@@ -164,11 +165,73 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
           _seguroController.text = value;
         });
 
+    final calendarLicencia = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        RaisedButton(
+          child: Text('Seleccione la fecha de vencimiento',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white)),
+          color: kBaseColor,
+          onPressed: () {
+            showDatePicker(
+                    context: context,
+                    initialDate:
+                        _dateLicencia == null ? DateTime.now() : _dateLicencia,
+                    firstDate:
+                        _dateLicencia == null ? DateTime.now() : _dateLicencia,
+                    lastDate: DateTime(2050))
+                .then((date) {
+              setState(() {
+                _dateLicencia = date;
+                var dateAux = date.toIso8601String().split("T")[0];
+                _licenciaController.text = dateAux;
+              });
+            });
+          },
+        )
+      ],
+    );
+
+    final calendarSeguro = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        RaisedButton(
+          child: Text("Seleccione la fecha de vencimiento",
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white)),
+          color: kBaseColor,
+          onPressed: () {
+            showDatePicker(
+                    context: context,
+                    initialDate:
+                        _dateLicencia == null ? DateTime.now() : _dateLicencia,
+                    firstDate:
+                        _dateLicencia == null ? DateTime.now() : _dateLicencia,
+                    lastDate: DateTime(2050))
+                .then((date) {
+              setState(() {
+                _dateLicencia = date;
+                var dateAux = date.toIso8601String().split("T")[0];
+                print(dateAux);
+                _seguroController.text = dateAux;
+              });
+            });
+          },
+        )
+      ],
+    );
     final fields = Padding(
       padding: EdgeInsets.only(top: 10.0, bottom: 15.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[placaField],
+        children: <Widget>[
+          placaField,
+          seguroField,
+          calendarSeguro,
+          licenciaField,
+          calendarLicencia
+        ],
       ),
     );
 
@@ -180,7 +243,7 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
         minWidth: mq.size.width / 1.2,
         padding: EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 15.0),
         child: Text(
-          !isAfiliado ? "Registrarse" : "Continuar",
+          "Continuar",
           textAlign: TextAlign.center,
           style: TextStyle(
               fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.bold),

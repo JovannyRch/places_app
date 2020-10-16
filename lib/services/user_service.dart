@@ -23,8 +23,17 @@ class UserService {
     if (resp.exists) {
       print('respuestAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
       print(resp);
-      return resp.data().[];
+      return Usuario.fromMap(resp.data(), resp.id);
     }
     return null;
+  }
+
+  Future<bool> updateUser(Usuario user, String id) async {
+    bool bandera = false;
+    final resp = await api
+        .addDocumentWithId(id, user.toJson())
+        .then((value) => bandera = true)
+        .catchError((onError) => bandera = false);
+    return bandera;
   }
 }
