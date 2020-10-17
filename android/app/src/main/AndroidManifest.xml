@@ -12,7 +12,10 @@
 	<application android:name=".Application" android:label="places_app" android:icon="@mipmap/ic_launcher">
 
 
-		<meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDRsPm_IEKxt5Hu9bPfa7FT4fn4vPh-jG0" />
+		<!-- <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyDRsPm_IEKxt5Hu9bPfa7FT4fn4vPh-jG0" /> -->
+
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCGJlfZk5tIMo4ebBwr-7TfEjSTNs8rmB8"/>
+
 		<activity android:name=".MainActivity" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
 			<!--
 			Specifies an Android theme to apply to this Activity as soon as

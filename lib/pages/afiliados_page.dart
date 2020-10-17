@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:places_app/components/afiliados_slider.dart';
 import 'package:places_app/components/map.dart';
+import 'package:places_app/components/mapaGoogle.dart';
 import 'package:places_app/models/categoria_model.dart';
 
 CameraPosition _initialPosition =
@@ -73,7 +74,7 @@ class _AfiliadosPageState extends State<AfiliadosPage> {
   Widget _mapContainer() {
     return Container(
       height: _size.height * 0.6,
-      child: MapComponent(),
+      child: MapaGoogleComponent(),
     );
   }
 }

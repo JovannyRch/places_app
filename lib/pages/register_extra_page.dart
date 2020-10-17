@@ -175,13 +175,16 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
           color: kBaseColor,
           onPressed: () {
             showDatePicker(
-                    context: context,
-                    initialDate:
-                        _dateLicencia == null ? DateTime.now() : _dateLicencia,
-                    firstDate:
-                        _dateLicencia == null ? DateTime.now() : _dateLicencia,
-                    lastDate: DateTime(2050))
-                .then((date) {
+              context: context,
+              initialDate:
+                  _dateLicencia == null ? DateTime.now() : _dateLicencia,
+              firstDate: _dateLicencia == null ? DateTime.now() : _dateLicencia,
+              lastDate: DateTime(2050),
+              fieldLabelText: 'Fecha de vencimiento de su seguro',
+              fieldHintText: 'Fecha de vencimiento de su seguro',
+              cancelText: 'Cancelar',
+              helpText: 'Fecha de vencimiento de su seguro',
+            ).then((date) {
               setState(() {
                 _dateLicencia = date;
                 var dateAux = date.toIso8601String().split("T")[0];
@@ -205,10 +208,13 @@ class _RegisterExtraPageState extends State<RegisterExtraPage> {
             showDatePicker(
                     context: context,
                     initialDate:
-                        _dateLicencia == null ? DateTime.now() : _dateLicencia,
+                        _dateSeguro == null ? DateTime.now() : _dateSeguro,
                     firstDate:
-                        _dateLicencia == null ? DateTime.now() : _dateLicencia,
-                    lastDate: DateTime(2050))
+                        _dateSeguro == null ? DateTime.now() : _dateSeguro,
+                    lastDate: DateTime(2050),
+                    fieldLabelText: 'Fecha de vencimiento de su seguro',
+                    fieldHintText: 'Fecha de vencimiento de su seguro',
+                    cancelText: 'Cancelar')
                 .then((date) {
               setState(() {
                 _dateLicencia = date;
