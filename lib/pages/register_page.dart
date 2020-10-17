@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:places_app/components/blur_container.dart';
 import 'package:places_app/helpers/alerts_helper.dart';
 import 'package:places_app/models/usuario_model.dart';
+import 'package:places_app/providers/push_notification_provider.dart';
 
 import 'package:places_app/routes/routes.dart';
 import 'package:places_app/shared/user_preferences.dart';
@@ -25,6 +26,8 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController _apellidoPaternoController = TextEditingController();
   TextEditingController _apellidoMaternoController = TextEditingController();
   TextEditingController _rePasswordController = TextEditingController();
+  PushNotificationsPovider _pushNotificationProvider =
+      PushNotificationsPovider();
   MediaQueryData mq;
   bool isAfiliado = false;
   UserPreferences preferences = new UserPreferences();
@@ -41,6 +44,8 @@ class _RegisterPageState extends State<RegisterPage> {
         });
         return;
       } else {
+        final tokenPush = await _pushNotificationProvider.getToken();
+        print('TOKENNNNNNNN -> $tokenPush');
         _formKey.currentState.save();
         UserCredential user = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
@@ -64,7 +69,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 licencia: "",
                 nombre: _nameController.text,
                 placa: "",
-                seguro: "");
+                seguro: "",
+                tokenPush: tokenPush);
             await usuario.save(_emailController.text);
             preferences.email = _emailController.text.toLowerCase();
             preferences.tipoUsuario = "afiliado";
@@ -77,7 +83,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 licencia: "",
                 nombre: _nameController.text,
                 placa: "",
-                seguro: "");
+                seguro: "",
+                tokenPush: tokenPush);
             await usuario.save(_emailController.text);
             preferences.email = _emailController.text.toLowerCase();
             preferences.tipoUsuario = "normal";

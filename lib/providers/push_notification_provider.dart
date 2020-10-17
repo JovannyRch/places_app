@@ -39,6 +39,11 @@ class PushNotificationsPovider {
     );
   }
 
+  getToken<String>() async {
+    final token = await _firebaseMessaging.getToken();
+    return token;
+  }
+
   // TODO: recibir argumentos
 
   Future<dynamic> onMessage(Map<String, dynamic> message) async {

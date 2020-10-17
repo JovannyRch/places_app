@@ -22,7 +22,8 @@ class Usuario {
       this.nombre = "",
       this.placa = "",
       this.seguro = "",
-      this.licencia = ""});
+      this.licencia = "",
+      this.tokenPush = ""});
 
   Api api = new Api('usuarios');
 
@@ -35,6 +36,7 @@ class Usuario {
   String placa;
   String seguro;
   String licencia;
+  String tokenPush;
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
       id: json["id"],
@@ -45,7 +47,8 @@ class Usuario {
       licencia: json["licencia"],
       nombre: json["nombre"],
       placa: json["placa"],
-      seguro: json["seguro"]);
+      seguro: json["seguro"],
+      tokenPush: json["tokenPush"]);
 
   factory Usuario.fromMap(Map<String, dynamic> json, String id) => Usuario(
       id: id,
@@ -56,7 +59,8 @@ class Usuario {
       licencia: json["licencia"],
       nombre: json["nombre"],
       placa: json["placa"],
-      seguro: json["seguro"]);
+      seguro: json["seguro"],
+      tokenPush: json["tokenPush"]);
 
   Map<String, dynamic> toJson() => {
         "tipoUsuario": tipoUsuario,
@@ -66,7 +70,8 @@ class Usuario {
         "licencia": licencia,
         "nombre": nombre,
         "placa": placa,
-        "seguro": seguro
+        "seguro": seguro,
+        "tokenPush": tokenPush
       };
 
   Future save(String id) async {
