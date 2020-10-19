@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:places_app/routes/routes.dart';
 import 'package:places_app/shared/user_preferences.dart';
+import 'package:places_app/storage/App.dart';
+import 'package:provider/provider.dart';
 
 class MenuBar extends StatefulWidget {
   MenuBar();
@@ -11,9 +13,11 @@ class MenuBar extends StatefulWidget {
 
 class _MenuBarState extends State<MenuBar> {
   UserPreferences preferences = new UserPreferences();
+  AppState appState;
 
   @override
   Widget build(BuildContext context) {
+    this.appState = Provider.of<AppState>(context);
     Map<String, dynamic> drawer = {
       "logo": "assets/images/logo.png",
       "background": null,
@@ -71,11 +75,7 @@ class _MenuBarState extends State<MenuBar> {
                       onTap: () => {},
                     ),
                     SizedBox(height: 10),
-                    ListTile(
-                      leading: const Icon(Icons.exit_to_app, size: 20),
-                      title: Text("Cerrar sesión"),
-                      onTap: handleLogOut,
-                    ),
+                    _authWidget(),
                     SizedBox(height: 54),
                   ],
                 ),
@@ -87,9 +87,29 @@ class _MenuBarState extends State<MenuBar> {
     );
   }
 
-  Widget handleLogOut() {
+  Widget _authWidget() {
+    if (appState.isInvitado) {
+      return ListTile(
+        leading: const Icon(Icons.exit_to_app, size: 20),
+        title: Text("Iniciar sesión"),
+        onTap: handleLogOut,
+      );
+    } else {
+      return ListTile(
+        leading: const Icon(Icons.exit_to_app, size: 20),
+        title: Text("Cerrar sesión"),
+        onTap: handleLogin,
+      );
+    }
+  }
+
+  void handleLogin() {
+    Navigator.pushReplacementNamed(context, login);
+  }
+
+  void handleLogOut() {
     preferences.email = "";
-    preferences.tipoUsuario = "";
+    preferences.tipoUsuario = "invitado";
     preferences.nombreAfiliacion = "";
     Navigator.pushReplacementNamed(context, login);
   }

@@ -14,11 +14,7 @@ void main() async {
   await userPrefrences.initPrefs();
 
   String initialRoute;
-  if (userPrefrences.isLogged) {
-    initialRoute = routes.home;
-  } else {
-    initialRoute = routes.login;
-  }
+  initialRoute = routes.home;
   runApp(MyApp(initialRoute));
 }
 

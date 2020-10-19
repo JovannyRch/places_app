@@ -12,12 +12,29 @@ class CategoriesPage extends StatefulWidget {
 }
 
 class _CategoriesPageState extends State<CategoriesPage> {
-  List<Categoria> categorias = GlobalData.categorias;
+  List<Categoria> categorias = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    this.initData();
+  }
+
+  void initData() async {
+    this.categorias = await Categoria.fetchData();
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   Size _size;
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
     return Scaffold(
       body: SafeArea(
           child: Column(

@@ -13,17 +13,18 @@ String usuarioToJson(List<Usuario> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Usuario {
-  Usuario(
-      {this.id = "",
-      this.tipoUsuario = "normal",
-      this.correo = "",
-      this.apellidoMaterno = "",
-      this.apellidoPaterno = "",
-      this.nombre = "",
-      this.placa = "",
-      this.seguro = "",
-      this.licencia = "",
-      this.tokenPush = ""});
+  Usuario({
+    this.id = "",
+    this.tipoUsuario = "normal",
+    this.correo = "",
+    this.apellidoMaterno = "",
+    this.apellidoPaterno = "",
+    this.nombre = "",
+    this.placa = "",
+    this.seguro = "",
+    this.licencia = "",
+    this.tokenPush = "",
+  });
 
   Api api = new Api('usuarios');
 

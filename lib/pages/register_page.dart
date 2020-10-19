@@ -62,15 +62,16 @@ class _RegisterPageState extends State<RegisterPage> {
           print("El usuario fue registrado correctamente");
           if (isAfiliado) {
             Usuario usuario = new Usuario(
-                tipoUsuario: "afiliado",
-                apellidoMaterno: _apellidoMaternoController.text,
-                apellidoPaterno: _apellidoPaternoController.text,
-                correo: _emailController.text,
-                licencia: "",
-                nombre: _nameController.text,
-                placa: "",
-                seguro: "",
-                tokenPush: tokenPush);
+              tipoUsuario: "afiliado",
+              apellidoMaterno: _apellidoMaternoController.text,
+              apellidoPaterno: _apellidoPaternoController.text,
+              correo: _emailController.text,
+              licencia: "",
+              nombre: _nameController.text,
+              placa: "",
+              seguro: "",
+              tokenPush: tokenPush,
+            );
             await usuario.save(_emailController.text);
             preferences.email = _emailController.text.toLowerCase();
             preferences.tipoUsuario = "afiliado";

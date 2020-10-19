@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   Size _size;
   UserPreferences preferences = new UserPreferences();
+
   AppState appState = new AppState();
 
   @override

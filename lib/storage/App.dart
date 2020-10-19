@@ -9,10 +9,18 @@ class AppState with ChangeNotifier {
   Usuario _usuario = Usuario();
   List<Afiliado> _afiliados = [];
   UserPreferences _userPreferences = UserPreferences();
+  bool _isInvitado;
 
   AppState() {
     init();
   }
+
+  set isInvitado(val) {
+    this._isInvitado = val;
+    notifyListeners();
+  }
+
+  bool get isInvitado => this._isInvitado;
 
   List<Rating> get ratings => this._ratings;
   set ratings(val) {
@@ -36,6 +44,8 @@ class AppState with ChangeNotifier {
 
   void init() async {
     usuario = new Usuario(id: _userPreferences.email);
+    isInvitado = _userPreferences.tipoUsuario == "invitado" ||
+        _userPreferences.tipoUsuario.toString().isEmpty;
     updateRatings();
     updateAfiliados();
   }

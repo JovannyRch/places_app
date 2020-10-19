@@ -19,7 +19,7 @@ class UserPreferences {
   }
 
   get tipoUsuario {
-    return _prefs.getString("tipoUsuario") ?? '';
+    return _prefs.getString("tipoUsuario") ?? 'invitado';
   }
 
   set tipoUsuario(String tipo) {

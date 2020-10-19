@@ -15,8 +15,8 @@ import 'package:flutter/scheduler.dart';
 
 enum TipoUsuario {
   NORMAL,
-  ADMIN,
   AFILIADO,
+  INVITADO,
 }
 
 class HomeScreen extends StatefulWidget {
@@ -29,7 +29,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isChecking = false;
   UserPreferences preferences = new UserPreferences();
-  TipoUsuario tipoUsuario = TipoUsuario.NORMAL;
+  TipoUsuario tipoUsuario = TipoUsuario.INVITADO;
   Usuario user = new Usuario();
   bool isOnline = false;
 
@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     //initData();
-    check();
+    checkTypeUser();
   }
 
   void initData() async {
@@ -54,16 +54,16 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {});
   }
 
-  void check() async {
+  void checkTypeUser() async {
     setChecking(true);
 
     String tipoUsrStr = preferences.tipoUsuario;
-    if (tipoUsrStr.isEmpty) {
-      user = await user.fetchData(preferences.email);
+
+    //El usuario es invitado
+    /*  user = await user.fetchData(preferences.email);
       if (user != null) {
         tipoUsrStr = user.tipoUsuario;
-      }
-    }
+      } */
 
     if (tipoUsrStr == 'afiliado') {
       tipoUsuario = TipoUsuario.AFILIADO;
@@ -79,8 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
           Navigator.of(context).pushNamed(registroAfilicacion);
         });
       }
-    } else if (tipoUsrStr == 'admin') {
-      tipoUsuario = TipoUsuario.ADMIN;
     } else if (tipoUsrStr == 'normal') {
       tipoUsuario = TipoUsuario.NORMAL;
     }
@@ -104,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     BottomNavigationBar bottomNavigationBar;
     List<Widget> pages = [];
+
     if (tipoUsuario == TipoUsuario.NORMAL) {
       pages = [
         HomePage(),
@@ -163,16 +162,21 @@ class _HomeScreenState extends State<HomeScreen> {
         },
       );
     } else {
-      //Admin
+      //Usuario invitado
+      pages = [
+        HomePage(),
+        CategoriesPage(),
+      ];
+
       bottomNavigationBar = BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: "Inicio Admin",
+            label: "Inicio",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.list),
-            label: "Historial Admin",
+            icon: Icon(Icons.grid_on),
+            label: "Categorías",
           ),
         ],
         currentIndex: _selectedIndex,
