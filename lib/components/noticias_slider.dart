@@ -98,6 +98,16 @@ class _NoticiasSliderState extends State<NoticiasSlider> {
               ),
             ),
           ),
+          Container(
+            margin: EdgeInsets.only(top: 5.0),
+            width: double.infinity,
+            child: Text(
+              n.contenido,
+              style: TextStyle(
+                fontSize: 12.0,
+              ),
+            ),
+          ),
         ],
       ),
     );
