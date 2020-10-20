@@ -66,7 +66,7 @@ class CategoryColumnItem extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: NetworkImage(category.img), fit: BoxFit.cover),
+                    image: NetworkImage(category.imagen), fit: BoxFit.cover),
               ),
             ),
             Container(

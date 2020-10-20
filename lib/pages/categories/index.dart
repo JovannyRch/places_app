@@ -23,6 +23,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
 
   void initData() async {
     this.categorias = await Categoria.fetchData();
+    print(categorias);
     setState(() {
       isLoading = false;
     });

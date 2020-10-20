@@ -3,24 +3,43 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:places_app/data/Data.dart';
 import 'package:places_app/models/noticia_model.dart';
 
-class NoticiasSlider extends StatelessWidget {
-  Size _size;
+class NoticiasSlider extends StatefulWidget {
+  NoticiasSlider({Key key}) : super(key: key);
 
-  Noticia noticia = Noticia(
-    fecha: 'Viernes 02 de Octubre 2020',
-    titulo: "Licencia para moticiclistas: contestamos las preguntas sobre",
-    contenido:
-        "La directora de seguridad vial de la Secreteria  de Movilidad nos dio detalles sobre la nueva licencia A-1",
-  );
+  @override
+  _NoticiasSliderState createState() => _NoticiasSliderState();
+}
+
+class _NoticiasSliderState extends State<NoticiasSlider> {
+  Size _size;
+  bool isLoading = true;
+  List<Noticia> noticias = [];
+
+  @override
+  void initState() {
+    super.initState();
+    this.initData();
+  }
+
+  void initData() async {
+    this.noticias = await Noticia.fetchData();
+    print(noticias);
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
     return CarouselSlider(
-      items: [1, 2, 3, 4, 5].map((i) {
+      items: noticias.map((i) {
         return Builder(
           builder: (BuildContext context) {
-            return _containerNoticia(noticia);
+            return _containerNoticia(i);
           },
         );
       }).toList(),

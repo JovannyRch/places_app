@@ -4,6 +4,7 @@ import 'package:places_app/components/afiliados_slider.dart';
 import 'package:places_app/components/noticias_slider.dart';
 
 import 'package:places_app/menu.dart';
+import 'package:places_app/models/anuncio.model.dart';
 import 'package:places_app/shared/user_preferences.dart';
 import 'package:places_app/storage/App.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  List<Anuncio> anuncios = [];
+  bool isLoading = true;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   Size _size;
   UserPreferences preferences = new UserPreferences();
@@ -25,6 +28,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    this.initData();
+  }
+
+  void initData() async {
+    this.anuncios = await Anuncio.fetchData();
+    print(anuncios);
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -32,6 +44,10 @@ class _HomePageState extends State<HomePage> {
     appState = Provider.of<AppState>(context);
     _size = MediaQuery.of(context).size;
     final arg = ModalRoute.of(context).settings.arguments;
+
+    if (isLoading) {
+      return Center(child: CircularProgressIndicator());
+    }
 
     print('Mensaje recibido desde notificacion $arg');
 
@@ -109,12 +125,12 @@ class _HomePageState extends State<HomePage> {
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {
           return new Image.network(
-            "https://ca-times.brightspotcdn.com/dims4/default/589e1df/2147483647/strip/true/crop/1280x720+0+0/resize/840x473!/quality/90/?url=https%3A%2F%2Fcalifornia-times-brightspot.s3.amazonaws.com%2F1f%2F22%2F634b5db1fb5e944d75eb6054aeee%2Fhoyla-aut-ford-lanza-una-masiva-campana-public-001",
+            anuncios[index].imagen,
             fit: BoxFit.fill,
           );
         },
         autoplay: true,
-        itemCount: 4,
+        itemCount: anuncios.length,
         pagination: new SwiperPagination(),
       ),
     );

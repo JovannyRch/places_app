@@ -28,12 +28,12 @@ const AUTOLAVADO =
 
 class GlobalData {
   static List<Categoria> categorias = [
-    Categoria(id: "1", nombre: "Mecánicos", img: MECANICO),
-    Categoria(id: "2", nombre: "Grúas", img: GRUAS),
-    Categoria(id: "13", nombre: "Vulcanizadora", img: VULCANIZADORA),
-    Categoria(id: "14", nombre: "Eléctrico", img: ELECTRICO),
-    Categoria(id: "15", nombre: "Alineación y balanceo", img: ALINEACION),
-    Categoria(id: "16", nombre: "Autolavado", img: AUTOLAVADO),
+    Categoria(id: "1", nombre: "Mecánicos", imagen: MECANICO),
+    Categoria(id: "2", nombre: "Grúas", imagen: GRUAS),
+    Categoria(id: "13", nombre: "Vulcanizadora", imagen: VULCANIZADORA),
+    Categoria(id: "14", nombre: "Eléctrico", imagen: ELECTRICO),
+    Categoria(id: "15", nombre: "Alineación y balanceo", imagen: ALINEACION),
+    Categoria(id: "16", nombre: "Autolavado", imagen: AUTOLAVADO),
   ];
 
   static List<Afiliado> afiliados = [
