@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:places_app/models/afiliado_model.dart';
 import 'package:places_app/models/categoria_model.dart';
 import 'package:places_app/pages/afilidados_detail.dart';
+import 'package:places_app/routes/routes.dart' as routes;
 import 'package:places_app/services/afiliados_service.dart';
 
 import 'package:places_app/storage/App.dart';
@@ -91,12 +92,16 @@ class _AfiliadosCarouselState extends State<AfiliadosCarousel> {
 
   Widget _containerAfiliado(BuildContext context, Afiliado a) {
     return GestureDetector(
-      onTap: () => {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AfiliadosDetailsPage(afiliado: a)),
-        )
+      onTap: () {
+        if (appState.isInvitado) {
+          Navigator.pushNamed(context, routes.login);
+        } else {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AfiliadosDetailsPage(afiliado: a)),
+          );
+        }
       },
       child: Container(
         decoration: BoxDecoration(

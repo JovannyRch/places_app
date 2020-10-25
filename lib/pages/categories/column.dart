@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:places_app/models/categoria_model.dart';
 import 'package:places_app/pages/afiliados_page.dart';
+import 'package:places_app/routes/routes.dart' as routes;
+import 'package:places_app/storage/App.dart';
+import 'package:provider/provider.dart';
 
 class ColumnCategories extends StatefulWidget {
   final List<Categoria> categories;
@@ -14,8 +17,11 @@ class ColumnCategories extends StatefulWidget {
 }
 
 class ColumnCategoriesState extends State<ColumnCategories> {
+  AppState _appState;
+
   @override
   Widget build(BuildContext context) {
+    _appState = Provider.of<AppState>(context);
     return GridView.builder(
       itemCount: widget.categories.length,
       padding: const EdgeInsets.only(top: 8, bottom: 8),
@@ -28,7 +34,10 @@ class ColumnCategoriesState extends State<ColumnCategories> {
       itemBuilder: (context, index) {
         return Container(
           padding: _edgeInsetsForIndex(index),
-          child: CategoryColumnItem(widget.categories[index]),
+          child: CategoryColumnItem(
+            widget.categories[index],
+            !_appState.isInvitado,
+          ),
         );
       },
     );
@@ -47,18 +56,23 @@ class ColumnCategoriesState extends State<ColumnCategories> {
 
 class CategoryColumnItem extends StatelessWidget {
   final Categoria category;
-
-  CategoryColumnItem(this.category);
+  final bool canTap;
+  CategoryColumnItem(this.category, this.canTap);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => AfiliadosPage(categoria: category)),
-        )
+        if (canTap)
+          {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => AfiliadosPage(categoria: category)),
+            )
+          }
+        else
+          {Navigator.pushNamed(context, routes.login)}
       },
       child: Container(
         child: Stack(

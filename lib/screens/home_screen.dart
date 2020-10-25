@@ -116,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Inicio",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.pin_drop),
+            icon: Icon(Icons.pin_drop, size: 20.0),
             label: "Servicios",
           ),
           BottomNavigationBarItem(
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Inicio",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.pin_drop),
+            icon: Icon(Icons.pin_drop, size: 20.0),
             label: "Servicios",
           ),
         ],

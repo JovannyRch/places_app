@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:places_app/const/const.dart';
+import 'package:places_app/pages/quetepaso/slide_show.dart';
 
 class QueTePasoPage extends StatelessWidget {
-  const QueTePasoPage({Key key}) : super(key: key);
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       body: SafeArea(
           child: Container(
         width: double.infinity,
@@ -15,7 +17,7 @@ class QueTePasoPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _title(),
-            _containerItems(),
+            _containerItems(context),
             _cancelButton(context),
           ],
         ),
@@ -49,7 +51,7 @@ class QueTePasoPage extends StatelessWidget {
     );
   }
 
-  Widget _containerItems() {
+  Widget _containerItems(BuildContext context) {
     return Container(
         width: double.infinity,
         child: Column(
@@ -59,47 +61,70 @@ class QueTePasoPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _itemMenu("Me paró una patrulla", Icons.policy),
-                _itemMenu("Mi carro no está", FontAwesomeIcons.search),
+                _itemMenu(
+                  "Me paró una patrulla",
+                  Icons.policy,
+                  context,
+                ),
+                _itemMenu(
+                  "Mi carro no está",
+                  FontAwesomeIcons.search,
+                  context,
+                ),
               ],
             ),
             SizedBox(height: 80.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _itemMenu("Tuve un accidente", FontAwesomeIcons.carCrash),
-                _itemMenu("Me pusieron la araña", Icons.car_repair),
+                _itemMenu(
+                  "Tuve un accidente",
+                  FontAwesomeIcons.carCrash,
+                  context,
+                ),
+                _itemMenu(
+                  "Me pusieron la araña",
+                  Icons.car_repair,
+                  context,
+                ),
               ],
             )
           ],
         ));
   }
 
-  Widget _itemMenu(String text, IconData icon) {
-    return Container(
-      child: Column(
-        children: [
-          Container(
-            height: 40.0,
-            width: 40.0,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: FaIcon(
-                icon,
-                color: kBaseColor,
+  void showBottomModal(BuildContext context) {
+    scaffoldKey.currentState.showBottomSheet((context) => SlideShow());
+  }
+
+  Widget _itemMenu(String text, IconData icon, BuildContext context) {
+    return GestureDetector(
+      onTap: () => showBottomModal(context),
+      child: Container(
+        child: Column(
+          children: [
+            Container(
+              height: 40.0,
+              width: 40.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: FaIcon(
+                  icon,
+                  color: kBaseColor,
+                ),
               ),
             ),
-          ),
-          SizedBox(height: 10.0),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 17.0,
+            SizedBox(height: 10.0),
+            Text(
+              text,
+              style: TextStyle(
+                fontSize: 17.0,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
