@@ -4,11 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:places_app/components/blur_container.dart';
-import 'package:places_app/helpers/alerts_helper.dart';
+
 import 'package:places_app/routes/routes.dart';
 import 'package:places_app/services/facebook_signin_service.dart';
 import 'package:places_app/services/google_signin_service.dart';
 import 'package:places_app/shared/user_preferences.dart';
+import 'package:places_app/storage/App.dart';
+import 'package:provider/provider.dart';
 
 import '../const/const.dart';
 
@@ -28,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController _passwordController = TextEditingController();
   UserPreferences preferences = new UserPreferences();
   bool isSubmitting = false;
+  AppState _appState;
 
   @override
   void initState() {
@@ -52,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
     if (user != null || userCredential != null) {
       preferences.email = _emailController.text;
       preferences.tipoUsuario = "normal";
+      _appState.isInvitado = false;
       Navigator.of(context).popAndPushNamed(home);
     }
   }
@@ -90,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final mq = MediaQuery.of(context);
-
+    _appState = Provider.of<AppState>(context);
     final logo = Image.asset(
       "assets/images/logo.png",
       height: mq.size.height / 4,
@@ -242,6 +246,22 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
         Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            MaterialButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .pushNamedAndRemoveUntil('/', (route) => false);
+              },
+              child: Text(
+                "Continuar como invitado",
+                style: Theme.of(context).textTheme.subtitle1.copyWith(
+                    color: kBaseColor, decoration: TextDecoration.underline),
+              ),
+            )
+          ],
+        ),
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[googleLoginButton, facebookLoginButton],
         )
@@ -325,7 +345,7 @@ class _LoginPageState extends State<LoginPage> {
       return null;
     } catch (e) {
       print('error $e');
-      _emailController.clear();
+      //_emailController.clear();
       _passwordController.clear();
       return null;
     }

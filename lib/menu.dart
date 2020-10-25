@@ -88,17 +88,18 @@ class _MenuBarState extends State<MenuBar> {
   }
 
   Widget _authWidget() {
+    print(" es invitado: ${appState.isInvitado}");
     if (appState.isInvitado) {
       return ListTile(
         leading: const Icon(Icons.exit_to_app, size: 20),
         title: Text("Iniciar sesión"),
-        onTap: handleLogOut,
+        onTap: handleLogin,
       );
     } else {
       return ListTile(
         leading: const Icon(Icons.exit_to_app, size: 20),
         title: Text("Cerrar sesión"),
-        onTap: handleLogin,
+        onTap: handleLogOut,
       );
     }
   }
@@ -111,6 +112,7 @@ class _MenuBarState extends State<MenuBar> {
     preferences.email = "";
     preferences.tipoUsuario = "invitado";
     preferences.nombreAfiliacion = "";
+    appState.isInvitado = true;
     Navigator.pushReplacementNamed(context, login);
   }
 

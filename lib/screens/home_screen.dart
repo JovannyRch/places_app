@@ -7,7 +7,7 @@ import 'package:places_app/pages/afiliados/afiliados_home.dart';
 import 'package:places_app/pages/categories/index.dart';
 import 'package:places_app/pages/historial_page.dart';
 import 'package:places_app/pages/home_page.dart';
-import 'package:places_app/routes/routes.dart';
+import 'package:places_app/routes/routes.dart' as routes;
 import 'package:places_app/services/afiliados_service.dart';
 import 'package:places_app/shared/user_preferences.dart';
 
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
         //`preferences.
       } else {
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          Navigator.of(context).pushNamed(registroAfilicacion);
+          Navigator.of(context).pushNamed(routes.registroAfilicacion);
         });
       }
     } else if (tipoUsrStr == 'normal') {
@@ -116,8 +116,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Inicio",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_on),
-            label: "Categorías",
+            icon: Icon(Icons.pin_drop),
+            label: "Servicios",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
@@ -175,8 +175,8 @@ class _HomeScreenState extends State<HomeScreen> {
             label: "Inicio",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.grid_on),
-            label: "Categorías",
+            icon: Icon(Icons.pin_drop),
+            label: "Servicios",
           ),
         ],
         currentIndex: _selectedIndex,
@@ -190,6 +190,13 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: kBaseColor,
+        onPressed: () {
+          Navigator.pushNamed(context, routes.queTePaso);
+        },
+        child: Icon(Icons.help),
+      ),
       body: IndexedStack(
         index: _selectedIndex,
         children: [

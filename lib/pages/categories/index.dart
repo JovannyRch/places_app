@@ -40,7 +40,7 @@ class _CategoriesPageState extends State<CategoriesPage> {
       body: SafeArea(
           child: Column(
         children: <Widget>[
-          CustomHeader(title: "Categorías"),
+          CustomHeader(title: "Servicios"),
           Expanded(
             child: ColumnCategories(categorias),
           )

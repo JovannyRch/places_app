@@ -2,6 +2,7 @@ import 'package:places_app/pages/afiliados/registro_afiliacion.dart';
 import 'package:places_app/pages/categories/index.dart';
 
 import 'package:places_app/pages/login_page.dart';
+import 'package:places_app/pages/quetepaso/quetepaso.dart';
 import 'package:places_app/pages/register_extra_page.dart';
 import 'package:places_app/pages/reset_password_page.dart';
 
@@ -18,6 +19,7 @@ const tutorial = "tutorial";
 const categorias = "categorias";
 const registroAfilicacion = "registroAfiliacion";
 const resetPassword = "resetPassword";
+const queTePaso = "queTePaso";
 
 final routes = {
   home: (BuildContext context) => HomeScreen(),
@@ -28,4 +30,5 @@ final routes = {
   categorias: (BuildContext context) => CategoriesPage(),
   registroAfilicacion: (_) => RegistroAfiliacion(),
   resetPassword: (BuildContext context) => ResetPasswordPage(),
+  queTePaso: (BuildContext context) => QueTePasoPage(),
 };

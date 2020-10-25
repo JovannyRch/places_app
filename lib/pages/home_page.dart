@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           top: 25,
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.transparent,
               borderRadius: BorderRadius.circular(200.0),
             ),
             child: IconButton(
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             _publicidad(),
             SizedBox(height: 25.0),
-            _title("Afiliados"),
+            _title("Servicios"),
             AfiliadosCarousel(),
             SizedBox(height: 5.0),
             _title("Contenido"),
@@ -121,6 +121,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _publicidad() {
     return Container(
+      margin: EdgeInsets.only(top: 30.0),
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       height: _size.height < 100 ? _size.height * 0.25 : 250.0,
       child: new Swiper(
         itemBuilder: (BuildContext context, int index) {
